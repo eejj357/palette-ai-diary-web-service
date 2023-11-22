@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+var jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -20,6 +21,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  token: {
+    type: String // 유효성 관리
+  },
+  tokenExp: {// 토큰 유효기간 : 토큰을 사용할 수 있는 유효기간
+    type: Number
+  }
 });
 
 userSchema.pre("save", function (next){
@@ -46,6 +53,56 @@ userSchema.pre("save", function (next){
     next();  // server.js save로 보내기
   }
 });
+
+
+userSchema.methods.comparePassword = function (plainPassword, cb) {
+  bcrypt.compare(plainPassword, this.password, function(err, isMatch) {
+    // password가 같지 않으면
+    if (err) return cb(err);
+    // password가 같으면
+    cb(null, isMatch);  // isMatch = true
+  });
+};
+
+
+userSchema.methods.generateToken = function (cb) {
+  var user = this;
+  // jsonwebtoken을 사용해서 token 생성
+  const token = jwt.sign(user._id.toHexString(), "secretToken");
+
+  user.token = token;
+
+  return user.save()
+    .then (ser => {
+      return cb(null, user);
+    })
+    .catch(err => {
+      return cb(err);
+    });
+};  
+
+
+userSchema.statics.findByToken = function (token, cb) {
+  const user = this;
+
+  jwt.verify(token, "secretToken", function(err, decoded) {
+    if (err) {
+      console.error(err);
+      return cb(err);
+    }
+    // user id를 이용하여 user를 찾은 후
+    // client에서 가져온 token과 DB에 보관된 token이 일치하는지 확인
+
+    user
+      .findOne({ _id: decoded, token: token})
+      .then(function (user) {
+        return cb(null, user);
+      })
+      .catch(function (err) {
+        return cb(err);
+      });
+  });
+};
 
 const User = mongoose.model("User", userSchema);
 
