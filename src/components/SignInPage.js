@@ -21,7 +21,7 @@ export default function SignInSide() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url(/mm.png)',
+          backgroundImage: 'url(/MM.png)',
           backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -39,7 +39,7 @@ export default function SignInSide() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1,  border: '1px solid white' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -48,7 +48,7 @@ export default function SignInSide() {
           <TextField
             margin="normal"
             required
-            fullWidth
+            sx={{ width: '80%' }}
             id="email"
             label="Email Address"
             name="email"
@@ -57,7 +57,7 @@ export default function SignInSide() {
           <TextField
             margin="normal"
             required
-            fullWidth
+            sx={{ width: '80%' }}
             name="password"
             label="Password"
             type="password"
@@ -65,9 +65,8 @@ export default function SignInSide() {
           />
           <Button
             type="submit"
-            fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ width: '80%', mt: 3, mb: 2, backgroundColor: 'gray' }}
           >
             Sign In
           </Button>

@@ -25,7 +25,7 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1,  border: '1px solid white' }}>
             <LockOutlinedIcon />
           </Avatar>
 
@@ -81,7 +81,7 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="동의합니돵~"
+                  label="여감자 동의합니까??!! 동의합니다~~~"
                 />
               </Grid>
             </Grid>
@@ -90,7 +90,7 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2,backgroundColor: 'gray' }}
             >
               Sign Up
             </Button>
