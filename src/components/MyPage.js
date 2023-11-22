@@ -54,21 +54,28 @@ export default function Main() {
             <Content>
                 <LeftPanel>
                     <List component="nav">
-                        <ListItemButton component={Link} to="/">
+                        <ListItemButton component={Link} to="/main">
                             <ListItemIcon>
                                 <DashboardIcon />
                             </ListItemIcon>
                             <ListItemText primary="HOME" />
                         </ListItemButton>
 
-                        <ListItemButton component={Link} to="/main">
+                        <ListItemButton component={Link} to="/">
                             <ListItemIcon>
                                 <PeopleIcon />
                             </ListItemIcon>
                             <ListItemText primary="MY" />
                         </ListItemButton>
 
-                        <ListItemButton component={Link} to="/signin">
+                        <ListItemButton component={Link} to="/post">
+                            <ListItemIcon>
+                                <DashboardIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="POST" />
+                        </ListItemButton>                           
+
+                        <ListItemButton component={Link} to="/">
                             <ListItemIcon>
                                 <PeopleIcon />
                             </ListItemIcon>
@@ -77,9 +84,22 @@ export default function Main() {
                     </List>
                 </LeftPanel>
                 <RightPanel>
-                        <div style={{ display: 'flex', flexDirection: 'column', width: '1400px', border: '1px solid black', borderRadius: '8px' }}>
-                            <div style={{ height: '50px', overflow: 'hidden', borderRadius: '8px 8px 0 0' }}>
-                                <img src="/mm.png" alt="이미지 설명" style={{ width: '50px', height: '50px', objectFit: 'cover',marginLeft: '15px' }} />
+                        <div style={{ 
+                            display: 'flex', 
+                            flexDirection: 'column', 
+                            width: '1200px', 
+                            border: '1px solid black', 
+                            borderRadius: '8px' }}>
+                            <div style={{ 
+                                height: '50px', 
+                                overflow: 'hidden', 
+                                borderRadius: '8px 8px 0 0' }}>
+                                <img src="/mm.png" alt="이미지 설명" 
+                                style={{ 
+                                    width: '50px', 
+                                    height: '50px', 
+                                    objectFit: 'cover',
+                                    marginLeft: '15px' }} />
                             </div>
 
                             <div style={{ padding: '16px', height: '200px' }}>
