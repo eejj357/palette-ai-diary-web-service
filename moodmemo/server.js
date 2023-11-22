@@ -1,22 +1,27 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const app = express();
-const port = 5000;
-const config = require("./config/dev");
-var jwt = require("jsonwebtoken");
+const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser")
 
-const auth = require("./middleware/auth");
 const User = require("./models/User");
-const { Diary } = require("./models/Diary");
-const bodyParser = require("body-parser");
+const Diary = require("./models/Diary");
+const config = require("./config/dev");
+const auth = require("./middleware/auth");
 
+const app = express();
+const port = 5000;
+
+
+// Middleware 설정
 // application/x-www-form-urlencoded 이렇게 된 데이터 분석해서 가져올 수 있게
 app.use(bodyParser.urlencoded({ extended: true }));
 // application/json 타입으로 된 것을 데이터 분석해서 가져올 수 있게
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+
+// MongoDB 연결
 mongoose
   .connect(config.mongoURI)
   .then(() => {
@@ -28,6 +33,7 @@ mongoose
   .catch((err) => {
     console.log("MongoDB connection error", err);
   });
+
 
 // 회원가입 라우터
 app.post("/register", async (req, res) => {
@@ -106,4 +112,41 @@ app.get("/api/user/logout", auth, (req, res) => {
     .catch((err) => {
       return res.json({ success: false, err });
     });
+});
+
+
+// 일기 저장 라우터
+app.post("/api/diary", auth, async (req, res) => {
+  try {
+    const { title, content, emotion } = req.body;
+
+    // Diary 모델을 사용하여 새 일기 작성
+    const newDiary = new Diary({
+      title,
+      content,
+      user: req.user._id,
+      emotion,
+    });
+
+    // 일기 저장
+    const savedDiary = await newDiary.save();
+
+    res.status(201).json(savedDiary);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+// 모든 일기 가져오기
+app.get("/api/getAllDiaries", async (req, res) => {
+  try {
+    const diaries = await Diary.find();
+
+    res.status(200).json(diaries);
+  } catch (err) {
+    console.err(err);
+    res.status(500).json({ error: "Internal Server Error"});
+  }
 });
