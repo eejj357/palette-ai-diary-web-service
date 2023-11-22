@@ -140,7 +140,7 @@ app.post("/api/diary", auth, async (req, res) => {
 
 
 // 모든 일기 가져오기
-app.get("/api/getAllDiaries", async (req, res) => {
+app.get("/api/get-all-diaries", async (req, res) => {
   try {
     const diaries = await Diary.find();
 
@@ -148,5 +148,19 @@ app.get("/api/getAllDiaries", async (req, res) => {
   } catch (err) {
     console.err(err);
     res.status(500).json({ error: "Internal Server Error"});
+  }
+});
+
+
+// 내 일기 가져오기
+app.get("/api/get-my-diaries", auth, async (req, res) => {
+  try {
+    // 현재 로그인한 user의 ID를 사용하여 해당 user의 일기를 찾는다
+    const userDiaries = await Diary.find({ user: req.user._id });
+
+    res.status(200).json(userDiaries);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
