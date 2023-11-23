@@ -57,7 +57,7 @@ app.post("/login", async (req, res) => {
       if (!user) {  // email이 DB에 없으면
         return res.json({
           loginSuccess: false,
-          message: "이메일을 다시 확인하세요.",
+          message: "이메일을 다시 확인하세요",
         });
       }
 
@@ -67,7 +67,7 @@ app.post("/login", async (req, res) => {
       if (!isMatch)
         return res.json({
           loginSuccess: false,
-          message: "비밀번호가 틀렸습니다.",
+          message: "비밀번호가 틀렸습니다",
         });
       
       // 3. password가 일치하다면 token 생성
@@ -110,7 +110,7 @@ app.get("/api/user/logout", auth, (req, res) => {
       });
     })
     .catch((err) => {
-      return res.json({ success: false, err });
+      return res.json({ success: false, message: "로그아웃에 실패하였습니다" });
     });
 });
 

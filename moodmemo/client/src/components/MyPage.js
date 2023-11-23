@@ -10,7 +10,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'; 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Content = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -40,6 +43,30 @@ const RightPanel = styled('div')(({ theme }) => ({
 
 
 export default function Main() {
+    const navigate = useNavigate();
+
+    // 로그아웃 핸들러
+    const handleLogout = async () => {
+        try {
+        // 로그아웃 API 호출
+        const response = await axios.get('/api/user/logout');
+
+        if (response.data.success) {
+            // 로그아웃 성공 시 로그인 페이지로 이동
+            navigate('/');
+
+            toast.success('로그아웃되었습니다');  // 팝업창 안뜸
+
+            // 로컬 스토리지에서 토큰 제거
+            localStorage.removeItem('token');
+        } else {
+            // 로그아웃 실패 시 에러 메세지 표시
+            toast.error(response.data.message);
+        }
+        } catch (err) {
+        console.error('로그아웃 중 오류:', err);
+        }
+    };
 
     return (
         <div style={{ display: 'flex', height: '100vh', flexDirection: 'column' }}>
@@ -75,7 +102,7 @@ export default function Main() {
                             <ListItemText primary="POST" />
                         </ListItemButton>                           
 
-                        <ListItemButton component={Link} to="/">
+                        <ListItemButton onClick={handleLogout}>
                             <ListItemIcon>
                                 <PeopleIcon />
                             </ListItemIcon>
