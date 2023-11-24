@@ -31,7 +31,7 @@ const AppBar = styled(MuiAppBar, {
 
 //좌측 패널
 const LeftPanel = styled('div')`
-  width: 300px;
+  width: 350px;
   padding: ${({ theme }) => theme.spacing(3)};
   background-color: #FFFFFF;
   height: 100vh;
@@ -73,7 +73,7 @@ export default function Main() {
   const [postContent, setPostContent] = useState('');// content
 
   const handlePostTitleChange = (event) => {
-    if (event.target.value.length <= 20) {
+    if (event.target.value.length <= 27) {
       setPostTitle(event.target.value);
     }
   };
@@ -126,22 +126,29 @@ export default function Main() {
 
       {/* 상단바*/}
       <AppBar position="absolute">
-        <Toolbar>
-          <img
-            src="logo_180.png"
-            alt="Logo"
-            style={{
-              width: '50px',
-              marginLeft: '20px',
-              marginRight: '15px',
-            }}
-          />
-          <Typography component="h1" variant="h6" color="black" fontWeight="bold" noWrap>
-            MOOD MEMO
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      
+                <Toolbar>
+                    {/* 로고 이미지 */}
+                    <Link to="/">
+                        <img
+                            src="logo_180.png"
+                            alt="Logo"
+                            style={{
+                                width: '50px',
+                                marginLeft: '20px',
+                                marginRight: '15px',
+                            }}
+                        />
+                    </Link>
+
+                    {/* 텍스트 */}
+                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <Typography  component="h1" variant="h6" color="black" fontWeight="bold" noWrap>
+                            MOOD MEMO
+                        </Typography>
+                    </Link>
+                </Toolbar>
+            </AppBar>
+
       {/* 상단바 제외 나머지 부분*/}
       <Content>
         {/* 좌측패널 - nav */}
@@ -149,7 +156,7 @@ export default function Main() {
           <List component="nav">
             <ListItemButton component={Link} to="/main">
               <ListItemIcon>
-                <HomeIcon />
+                <HomeIcon fontSize="large"  color="disabled"/>
               </ListItemIcon>
               <ListItemText
                 primary="HOME"
@@ -161,7 +168,7 @@ export default function Main() {
 
             <ListItemButton component={Link} to="/my">
               <ListItemIcon>
-                <PersonIcon color="disabled" />
+                <PersonIcon fontSize="large" color="disabled" />
               </ListItemIcon>
               <ListItemText
                 primary="MY"
@@ -173,7 +180,7 @@ export default function Main() {
 
             <ListItemButton component={Link} to="/post">
               <ListItemIcon>
-                <ModeIcon color="disabled" />
+                <ModeIcon fontSize="large"  />
               </ListItemIcon>
               <ListItemText
                 primary="POST"
@@ -185,7 +192,7 @@ export default function Main() {
 
             <ListItemButton component={Link} to="/">
               <ListItemIcon>
-                <LogoutIcon color="disabled" />
+                <LogoutIcon fontSize="large" color="disabled" />
               </ListItemIcon>
               <ListItemText
                 primary="LOGOUT"
@@ -196,7 +203,7 @@ export default function Main() {
             </ListItemButton>
           </List>
         </LeftPanel>
-        
+
         {/* 우측패널 - 상단 : 이미지, 하단 : 텍스트 입력칸 */}
         <RightPanel>
           <ImageRow>
@@ -227,7 +234,7 @@ export default function Main() {
             />
           </ImageRow>
 
-            {/* TITLE */}
+          {/* TITLE */}
           <Grid item xs={12} sm={6}>
             <CustomTextField
               label="Title "
@@ -238,25 +245,25 @@ export default function Main() {
                 style: { marginTop: '-5px' },
               }}
               inputProps={{
-                maxLength: 20,
+                maxLength: 27,
                 style: {
-                  fontSize: '20px',
-                  marginTop: '10px',
+                  fontSize: '16px',
                   marginLeft: '10px',
                   marginRight: '10px',
-                  lineHeight: '0',
+                  lineHeight: '1',
                 },
               }}
               value={PostTitle}
               onChange={handlePostTitleChange}
               style={{
                 marginTop: '30px',
+                marginBottom: '20px',
                 width: '600px',
               }}
             />
           </Grid>
 
-               {/* CONTENT */}
+          {/* CONTENT */}
           <Grid item xs={12} sm={6}>
             <CustomTextField
               label="Write about your feeling "
@@ -269,7 +276,7 @@ export default function Main() {
               inputProps={{
                 maxLength: 200,
                 style: {
-                  fontSize: '20px',
+                  fontSize: '16px',
                   marginLeft: '10px',
                   marginRight: '10px',
                   marginBottom: '10px',
@@ -279,20 +286,20 @@ export default function Main() {
               value={postContent}
               onChange={handlePostContentChange}
               style={{
-                marginBottom: '15px',
+                marginBottom: '10px',
                 marginTop: '20px',
                 width: '600px',
               }}
             />
           </Grid>
-            
+
           {/*글자수세기 200자 제한*/}
           <Typography
             variant="caption"
             color="textSecondary"
             style={{
               position: 'fixed',
-              bottom: '150px',
+              bottom: '220px',
               right: '530px',
               fontSize: '16px',
               fontWeight: 'bold',
@@ -304,12 +311,16 @@ export default function Main() {
           {/*POST 버튼*/}
           <Button
             variant="contained"
-            color="primary"
             onClick={handlePostButtonClick}
-            sx={{ backgroundColor: 'black' }}
+            sx={{ 
+              backgroundColor: 'black',
+              width : '200px',       
+            }}
           >
             POST
           </Button>
+
+
         </RightPanel>
       </Content>
     </div>
