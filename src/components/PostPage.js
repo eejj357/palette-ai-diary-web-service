@@ -244,7 +244,7 @@ export default function Main() {
                   marginTop: '10px',
                   marginLeft: '10px',
                   marginRight: '10px',
-                  lineHeight: '0',
+                  lineHeight: '1',
                 },
               }}
               value={PostTitle}
