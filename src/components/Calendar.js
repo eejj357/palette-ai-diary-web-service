@@ -31,7 +31,7 @@ const dummySetsFromDatabase = [
     },
     {
         id: 4,
-        emotion: 'anxiety',
+        emotion: 'fear',
         title: '안녕하세요저희는시크릿쥬쥬감자입니다!',
         content: '어떻게 이별까지 사랑하겠어 널 사랑하는 거지 사랑이라는 이유로 서로를 포기하고 찢어질 것 같이 아파할 수 없어 난 어떻게 이별까지 사랑하겠어 널 사랑하는 거지 사랑이라는 이유로 서로를 포기하고 찢어질 것 같이 아파할 수 없어 난 어떻게 이별까지 사랑하겠어 널 사랑하는 거지 사랑이라는 이유로 서로를 포기하고 찢어질 것 같이 아파할 수 없어 난 어떻게 이별까지 사랑하겠어 널 사랑하는 거지 사랑이라는 이유로 서로를 포기하고 찢어질 것 같이 아파할 수 없어 난',
         date: new Date('2023-11-21T18:55:45')
@@ -101,7 +101,7 @@ const dummySetsFromDatabase = [
     },
     {
         id: 14,
-        emotion: 'neutral',
+        emotion: 'fear',
         title: '안녕하세요저희는시크릿쥬쥬감자입니다!',
         content: '마약 투약 혐의를 받는 배우 이선균이 추가로 채취한 체모를 대상으로 한 2차 정밀감정에서도 음성 판정을 받은 가운데, 가수 지드래곤도 모발을 탈색하거나 염색하지 않은 사실이 확인되면서 물증을 찾지 못한 경찰이 궁지에 몰렸다. 24일 경찰 등에 따르면, 국과수는 최근 이선균의 체모를 추가로 정밀 감정한 결과 마약 음성 반응이 나왔다고 인천경찰청 마약범죄수사계에 통보했다.',
         date: new Date('2023-11-11T23:25:50')
@@ -121,7 +121,7 @@ function ServerDay(props) {
   const isHighlighted = dummyData.some(
     (data) =>
       dayjs(data.date).isSame(day, 'day') &&
-      ['sad', 'happy', 'anxiety', 'angry', 'neutral'].includes(data.emotion)
+      ['sad', 'happy', 'fear', 'angry', 'neutral'].includes(data.emotion)
   );
 
   const customStyle = {
@@ -130,7 +130,7 @@ function ServerDay(props) {
           const emotionColorMap = {
             sad: '#97C9FE',
             happy: '#FAF37E',
-            anxiety: '#95D7AF',
+            fear: '#95D7AF',
             angry: '#E88889',
             neutral: '#919191',
           };
@@ -141,7 +141,6 @@ function ServerDay(props) {
       : undefined,
   };
   
-
 //   // 원
 //   const badgeContentStyle = {
 //     width: 16, 
@@ -186,7 +185,7 @@ export default function DateCalendarServerRequest() {
         }}
         style={{
           width: '300px',
-          marginTop: '300px',
+          // marginTop: '100px',
         }}
       />
     </LocalizationProvider>

@@ -12,12 +12,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import 'react-calendar/dist/Calendar.css';
-import CustomCalendar from './Calendar'; 
-
-const Content = styled('div')(({ theme }) => ({
-    display: 'flex',
-    marginTop: theme.spacing(8),
-}));
+import CustomCalendar from './Calendar';
+import BarChart from './BarChart';
 
 
 //상단바
@@ -29,6 +25,12 @@ const AppBar = styled(MuiAppBar, {
     borderBottom: '3px solid black', // 아래에 검정색 테두리 추가
     boxShadow: 'none', //그림자효과제거
 }));
+
+const Content = styled('div')(({ theme }) => ({
+    display: 'flex',
+    marginTop: theme.spacing(8),
+}));
+
 
 //좌측 패널 
 const LeftPanel = styled('div')`
@@ -69,11 +71,6 @@ export default function Main() {
     // const [setsFromDatabase, setSetsFromDatabase] = useState([]); // for DB // 현재 사용 X
 
 
-    //캘린더
-    const handleCalendarChange = (value) => {
-        setCalendarValue(value);
-      }
-
     //DB연결 안 되어있어서 가상 데이터
     const dummySetsFromDatabase = [
         {
@@ -99,7 +96,7 @@ export default function Main() {
         },
         {
             id: 4,
-            emotion: 'anxiety',
+            emotion: 'fear',
             title: '안녕하세요저희는시크릿쥬쥬감자입니다!',
             content: '어떻게 이별까지 사랑하겠어 널 사랑하는 거지 사랑이라는 이유로 서로를 포기하고 찢어질 것 같이 아파할 수 없어 난 어떻게 이별까지 사랑하겠어 널 사랑하는 거지 사랑이라는 이유로 서로를 포기하고 찢어질 것 같이 아파할 수 없어 난 어떻게 이별까지 사랑하겠어 널 사랑하는 거지 사랑이라는 이유로 서로를 포기하고 찢어질 것 같이 아파할 수 없어 난 어떻게 이별까지 사랑하겠어 널 사랑하는 거지 사랑이라는 이유로 서로를 포기하고 찢어질 것 같이 아파할 수 없어 난',
             date: new Date('2023-11-21T18:55:45')
@@ -169,7 +166,7 @@ export default function Main() {
         },
         {
             id: 14,
-            emotion: 'neutral',
+            emotion: 'fear',
             title: '안녕하세요저희는시크릿쥬쥬감자입니다!',
             content: '마약 투약 혐의를 받는 배우 이선균이 추가로 채취한 체모를 대상으로 한 2차 정밀감정에서도 음성 판정을 받은 가운데, 가수 지드래곤도 모발을 탈색하거나 염색하지 않은 사실이 확인되면서 물증을 찾지 못한 경찰이 궁지에 몰렸다. 24일 경찰 등에 따르면, 국과수는 최근 이선균의 체모를 추가로 정밀 감정한 결과 마약 음성 반응이 나왔다고 인천경찰청 마약범죄수사계에 통보했다.',
             date: new Date('2023-11-11T23:25:50')
@@ -183,16 +180,31 @@ export default function Main() {
         },
     ];
 
+    //캘린더
+    const handleCalendarChange = (value) => {
+        setCalendarValue(value);
+    }
 
-    // 필터링 기능
+    // 이미지 클릭 시 필터링 적용 및 이미지 변경
     const handleImageClick = (image) => {
         // 이미지 파일 이름에서 감정 추출
         const emotionFromImage = image.split('_')[1]; // 예: emo_happy_1.png -> 'happy'
+        console.log('emotionFromImage:', emotionFromImage);
+
+        // 이미지를 클릭할 때마다 감정이 바뀌도록 설정
+        const newEmotionImage = selectedEmotion ? `emo_${emotionFromImage}_1.png` : `emo_${emotionFromImage}_2.png`;
+        console.log('newEmotionImage:', newEmotionImage);
 
         // 이미 선택된 감정과 동일한 경우 선택 해제, 아닌 경우 선택
         setSelectedEmotion((prev) => (prev === emotionFromImage ? null : emotionFromImage));
-    };
 
+        // 이미지 변경을 위한 로직 
+        const imageElement = document.querySelector(`img[src="${image}"]`);
+        console.log('imageElement:', imageElement);
+        if (imageElement) {
+            imageElement.src = newEmotionImage;
+        }
+    };
 
     const filteredSets = selectedEmotion
         ? dummySetsFromDatabase.filter((set) => set.emotion === selectedEmotion)
@@ -265,12 +277,12 @@ export default function Main() {
                     <List component="nav">
                         <ListItemButton component={Link} to="/main">
                             <ListItemIcon>
-                                <HomeIcon fontSize="large"  color="disabled"/>
+                                <HomeIcon fontSize="large" color="disabled" />
                             </ListItemIcon>
                             <ListItemText
                                 primary="HOME"
                                 primaryTypographyProps={{
-                                    style: { fontSize: '1.3em' } 
+                                    style: { fontSize: '1.3em' }
                                 }}
                             />
                         </ListItemButton>
@@ -283,7 +295,7 @@ export default function Main() {
                             <ListItemText
                                 primary="MY"
                                 primaryTypographyProps={{
-                                    style: {fontWeight: 'bold',  fontSize: '1.3em' } // 적절한 값을 선택
+                                    style: { fontWeight: 'bold', fontSize: '1.3em' } // 적절한 값을 선택
                                 }}
                             />
                         </ListItemButton>
@@ -313,8 +325,14 @@ export default function Main() {
                         </ListItemButton>
                     </List>
 
+                    {/* 막대그래프 */}
+                    <BarChart />
+
+
                     {/* 캘린더 */}
                     <CustomCalendar onChange={handleCalendarChange} value={calendarValue} />
+
+
                 </LeftPanel>
 
                 {/*우측패널 */}
@@ -322,37 +340,24 @@ export default function Main() {
                     <div>
                         {/* 6개의 이미지 */}
                         <ImageRow>
+
+                            {/* CLICK.png */}
                             <img
                                 src="/CLICK.png"
                                 alt="click"
                                 style={{ width: '100px', height: '100px' }}
                             />
-                            <img
-                                src="/emo_happy_1.png"
-                                alt="emo 1"
-                                style={{ width: '100px', height: '100px' }}
-                                onClick={() => handleImageClick("/emo_happy_1.png")} />
 
-                            <img
-                                src="/emo_angry_1.png"
-                                alt="emo 2"
-                                style={{ width: '100px', height: '100px' }}
-                                onClick={() => handleImageClick("/emo_angry_1.png")} />
-                            <img
-                                src="/emo_neutral_1.png"
-                                alt="emo 3"
-                                style={{ width: '100px', height: '100px' }}
-                                onClick={() => handleImageClick("/emo_neutral_1.png")} />
-                            <img
-                                src="/emo_anxiety_1.png"
-                                alt="emo 4"
-                                style={{ width: '100px', height: '100px' }}
-                                onClick={() => handleImageClick("/emo_anxiety_1.png")} />
-                            <img
-                                src="/emo_sad_1.png"
-                                alt="emo 5"
-                                style={{ width: '100px', height: '100px' }}
-                                onClick={() => handleImageClick("/emo_sad_1.png")} />
+                            {/* 감정 이미지들 */}
+                            {["happy", "angry", "neutral", "fear", "sad"].map((emotion) => (
+                                <img
+                                    key={emotion}
+                                    src={`/emo_${emotion}_1.png`}
+                                    alt={`emo ${emotion}`}
+                                    style={{ width: '100px', height: '100px' }}
+                                    onClick={() => handleImageClick(`/emo_${emotion}_1.png`)}
+                                />
+                            ))}
                         </ImageRow>
 
                         {/* 내용 넣을 부분 : SET(이미지 + 작성시간 + 타이틀 + 글)*/}

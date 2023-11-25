@@ -29,23 +29,27 @@ const AppBar = styled(MuiAppBar, {
   boxShadow: 'none',
 }));
 
+
+
 //좌측 패널
 const LeftPanel = styled('div')`
   width: 350px;
   padding: ${({ theme }) => theme.spacing(3)};
-  background-color: #FFFFFF;
+  background-color: #FFFFFF; 
   height: 100vh;
-  border-right: 3px solid #000000;
 `;
 
 //우측 패널
 const RightPanel = styled('div')`
   flex: 1;
+  padding: ${({ theme }) => theme.spacing(3)};
   display: flex;
   flex-direction: column;
-  padding: ${({ theme }) => theme.spacing(3)};
   align-items: center;
-  background-color: #ffffff;
+  justify-content: flex-start; 
+  margin-bottom: 20px;
+  height: 100%;
+  border-left: 5px solid #000000; 
 `;
 
 
@@ -223,7 +227,7 @@ export default function Main() {
               style={{ width: '100px', height: '100px' }}
             />
             <img
-              src="/emo_anxiety_1.png"
+              src="/emo_fear_1.png"
               alt="emo 4"
               style={{ width: '100px', height: '100px' }}
             />
