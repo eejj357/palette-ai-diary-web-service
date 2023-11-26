@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { BarChart } from '@mui/x-charts/BarChart';
+import { BarChart, } from '@mui/x-charts/BarChart';
+import Typography from '@mui/material/Typography';
 
-export default function ColoredBarChart() {
+export default function ColoredBarChart({ title, color }) {
     // Dummy 데이터
     const dummySetsFromDatabase = [
         {
@@ -111,6 +112,10 @@ export default function ColoredBarChart() {
         },
     ];
 
+
+    //현재 날짜
+    const currentDate = new Date();
+
     // 감정 카운트를 저장할 객체 초기화
     const emotionCount = {
         HAPPY: 0,
@@ -120,10 +125,18 @@ export default function ColoredBarChart() {
         SAD: 0,
     };
 
-    // Dummy 데이터에서 감정 카운트
+    // Dummy 데이터에서 감정 & 날짜 동시 카운트
     dummySetsFromDatabase.forEach(data => {
         const emotion = data.emotion.toUpperCase(); // 감정 데이터를 대문자로 변환
-        if (emotionCount.hasOwnProperty(emotion)) {
+
+        //데이터의 월 정보를 추출
+        const dataMonth = data.date.getMonth();
+
+        //현재 날짜의 월 정보를 추출
+        const currentMonth = currentDate.getMonth();
+
+
+        if (emotionCount.hasOwnProperty(emotion) && dataMonth === currentMonth) {
             emotionCount[emotion]++;
         }
     });
@@ -140,32 +153,48 @@ export default function ColoredBarChart() {
         series: [
             {
                 data: Object.values(emotionCount), // 감정 카운트 값들
-                color: '#bab0ab',
+                color: color,
             },
         ],
+    };
+
+    // 오늘 날짜의 월을 영어로 반환하는 함수
+    const getMonthName = () => {
+        const months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        const today = new Date();
+        const monthIndex = today.getMonth();
+        return months[monthIndex];
     };
 
     return (
         <div style={{
             position: 'relative',
             marginTop: '70px',
-            marginBottom: '-30px',
+            marginBottom: '-10px',
             display: 'flex',
-            justifyContent: 'center', // 수평 가운데 정렬
-            alignItems: 'center', // 수직 가운데 정렬
+            flexDirection: 'column', // 컨테이너 안의 요소들을 세로로 배열하도록 수정
+            alignItems: 'center',
         }}>
-            {/* <style>
-                {`
-          .recharts-cartesian-axis-tick-value {
-            display: none;
-          }
-        `}
-            </style> */}
+            <Typography
+                variant="h6"
+                gutterBottom
+                style={{
+                    // fontWeight: 'bold' ,
+                    marginLeft: '10px',
+                    marginBottom: '-30px',
+                    fontSize: '0.8rem'
+                }}>
+                {`${title}ㅤㅤㅤㅤㅤㅤㅤ ${getMonthName()}`}
+            </Typography>
 
             <BarChart
                 {...barChartData}
-                width={350}
-                height={250}
+                width={350 *0.9}
+                height={250 *0.9}
                 leftAxis={null}
                 rightAxis={null}
             />

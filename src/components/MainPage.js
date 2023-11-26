@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import 'react-calendar/dist/Calendar.css';
 import CustomCalendar from './Calendar';
-import BarChart from './BarChart';
+import ColoredBarChart from './BarChart';
 
 
 //상단바
@@ -26,13 +26,10 @@ const AppBar = styled(MuiAppBar, {
     boxShadow: 'none', //그림자효과제거
 }));
 
-
-
 const Content = styled('div')(({ theme }) => ({
     display: 'flex',
     marginTop: theme.spacing(8),
 }));
-
 
 
 //좌측 패널 
@@ -188,6 +185,9 @@ export default function Main() {
         setCalendarValue(value);
     }
 
+    //막대그래프
+    const BarColor = '#2A5783';
+
     // 이미지 클릭 시 필터링 적용 및 이미지 변경
     const handleImageClick = (image) => {
         // 이미지 파일 이름에서 감정 추출
@@ -329,11 +329,17 @@ export default function Main() {
                     </List>
 
                     {/* 막대그래프 */}
-                    <BarChart />
+                    <ColoredBarChart 
+                    title="TRENDㅤㅤ"
+                    color ={BarColor}
+                    />
 
 
                     {/* 캘린더 */}
-                    <CustomCalendar onChange={handleCalendarChange} value={calendarValue} />
+                    <CustomCalendar 
+                    onChange={handleCalendarChange} 
+                    value={calendarValue} 
+                    />
 
 
                 </LeftPanel>

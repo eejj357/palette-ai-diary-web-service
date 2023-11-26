@@ -13,6 +13,9 @@ import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { TextField, Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import 'react-calendar/dist/Calendar.css';
+import CustomCalendar from './Calendar';
+import ColoredBarChart from './BarChart';
 
 const Content = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -75,13 +78,16 @@ const CustomTextField = styled(TextField)({
 export default function Main() {
   const [PostTitle, setPostTitle] = useState(''); // title 
   const [postContent, setPostContent] = useState('');// content
+  const [calendarValue, setCalendarValue] = useState(new Date()); // for 캘린더
 
+  //title 
   const handlePostTitleChange = (event) => {
     if (event.target.value.length <= 27) {
       setPostTitle(event.target.value);
     }
   };
 
+  //content
   const handlePostContentChange = (event) => {
     if (event.target.value.length <= 200) {
       setPostContent(event.target.value);
@@ -120,6 +126,14 @@ export default function Main() {
     }
   };
 
+  //캘린더
+  const handleCalendarChange = (value) => {
+    setCalendarValue(value);
+  }
+
+  //막대그래프
+  const BarColor = '#B9DDF1';
+
   useEffect(() => {
     // Fetch data or perform any side effect based on your needs
   }, []);
@@ -130,28 +144,28 @@ export default function Main() {
 
       {/* 상단바*/}
       <AppBar position="absolute">
-                <Toolbar>
-                    {/* 로고 이미지 */}
-                    <Link to="/">
-                        <img
-                            src="logo_180.png"
-                            alt="Logo"
-                            style={{
-                                width: '50px',
-                                marginLeft: '20px',
-                                marginRight: '15px',
-                            }}
-                        />
-                    </Link>
+        <Toolbar>
+          {/* 로고 이미지 */}
+          <Link to="/">
+            <img
+              src="logo_180.png"
+              alt="Logo"
+              style={{
+                width: '50px',
+                marginLeft: '20px',
+                marginRight: '15px',
+              }}
+            />
+          </Link>
 
-                    {/* 텍스트 */}
-                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <Typography  component="h1" variant="h6" color="black" fontWeight="bold" noWrap>
-                            MOOD MEMO
-                        </Typography>
-                    </Link>
-                </Toolbar>
-            </AppBar>
+          {/* 텍스트 */}
+          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Typography component="h1" variant="h6" color="black" fontWeight="bold" noWrap>
+              MOOD MEMO
+            </Typography>
+          </Link>
+        </Toolbar>
+      </AppBar>
 
       {/* 상단바 제외 나머지 부분*/}
       <Content>
@@ -160,7 +174,7 @@ export default function Main() {
           <List component="nav">
             <ListItemButton component={Link} to="/main">
               <ListItemIcon>
-                <HomeIcon fontSize="large"  color="disabled"/>
+                <HomeIcon fontSize="large" color="disabled" />
               </ListItemIcon>
               <ListItemText
                 primary="HOME"
@@ -184,7 +198,7 @@ export default function Main() {
 
             <ListItemButton component={Link} to="/post">
               <ListItemIcon>
-                <ModeIcon fontSize="large"  />
+                <ModeIcon fontSize="large" />
               </ListItemIcon>
               <ListItemText
                 primary="POST"
@@ -206,6 +220,19 @@ export default function Main() {
               />
             </ListItemButton>
           </List>
+
+          {/* 막대그래프 */}
+          <ColoredBarChart
+            title="MY TREND"
+            color={BarColor}
+          />
+
+
+          {/* 캘린더 */}
+          <CustomCalendar
+            onChange={handleCalendarChange}
+            value={calendarValue}
+          />
         </LeftPanel>
 
         {/* 우측패널 - 상단 : 이미지, 하단 : 텍스트 입력칸 */}
@@ -302,11 +329,11 @@ export default function Main() {
             variant="caption"
             color="textSecondary"
             style={{
-              position: 'fixed',
-              bottom: '220px',
-              right: '530px',
               fontSize: '16px',
               fontWeight: 'bold',
+              marginLeft : '500px',
+              marginTop : '-50px',
+              marginBottom : '50px'
             }}
           >
             {`${postContent.length}/200`}
@@ -316,9 +343,9 @@ export default function Main() {
           <Button
             variant="contained"
             onClick={handlePostButtonClick}
-            sx={{ 
+            sx={{
               backgroundColor: 'black',
-              width : '200px',       
+              width: '200px',
             }}
           >
             POST
