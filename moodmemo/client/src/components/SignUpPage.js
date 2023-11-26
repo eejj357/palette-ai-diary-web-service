@@ -88,6 +88,8 @@ export default function SignUp() {
   return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
+
+        {/* 내용 부분*/}
         <Box
           sx={{
             marginTop: 8,
@@ -96,30 +98,46 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+
+          {/* 자물쇠 아이콘 + 동그라미 */}
+          <Avatar sx={{
+            m: 1,
+            backgroundColor: 'black',
+            // border: '1px solid white' 
+          }}>
             <LockOutlinedIcon />
           </Avatar>
 
-          <Typography component="h1" variant="h5">
+          {/* SIGN UP 문구*/}
+          <Typography 
+          component="h1" 
+          variant="h5"
+          sx={{ fontWeight: 'bold' }} >
             Sign up
           </Typography>
           
+            {/* 성, 이름, 이메일, 비밀번호*/}
             <Grid container spacing={2}>
+              {/*성 칸*/}
               <Grid item xs={12} sm={6}>
-
                 <TextField
                   name="firstName"
                   required
                   fullWidth
                   id="firstName"
                   label="First Name"
-                  autoFocus
                   margin="normal"
+                  sx={{
+                    '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
+                      fontWeight: 'bold',
+                    },
+                  }}
                   onChange={handleChange}
                 />
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+               {/*이름 칸*/}
+               <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -127,10 +145,16 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   margin="normal"
+                  sx={{
+                    '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
+                      fontWeight: 'bold',
+                    },
+                  }}
                   onChange={handleChange}
                 />
               </Grid>
-
+                  
+               {/*이메일 칸*/}
               <Grid item xs={12}>
                 <TextField
                   required
@@ -138,11 +162,18 @@ export default function SignUp() {
                   id="email"
                   label="Email Address"
                   name="email"
+                  sx={{
+                    '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
+                      fontWeight: 'bold',
+                    },
+                  }}
                   onChange={handleChange}
                 />
               </Grid>
 
+              {/*비밀번호 칸*/}
               <Grid item xs={12}>
+
                 <TextField
                   required
                   fullWidth
@@ -150,41 +181,53 @@ export default function SignUp() {
                   label="Password"
                   type="password"
                   id="password"
+                  sx={{
+                    '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
+                      fontWeight: 'bold',
+                    },
+                  }}
                   onChange={handleChange}
                 />
               </Grid>
+              
+              {/*개인정보 수집 동의 체크박스*/}
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={
-                  <Checkbox 
-                    value="allowExtraEmails" 
-                    color="primary" 
-                    checked={isAgreed}
-                    onChange={handleAgreeChange}
-                    />
+                  control={<Checkbox value="allowExtraEmails" color="primary" checked={isAgreed} onChange={handleAgreeChange}/>}
+                  label={
+                    <Typography 
+                    // sx={{ fontWeight: 'bold' }}
+                    >
+                      개인정보 수집 및 이용에 동의합니다.
+                    </Typography>
                   }
-                  label="개인정보 수집 및 이용에 동의합니다"
                 />
               </Grid>
             </Grid>
 
+            {/* SIGN UP 버튼 */}
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2,backgroundColor: 'black' }}
               onClick={handleSignup}
             >
               Sign Up
             </Button>
 
+            {/*SIGN IN으로 넘어가도록 링크 연결 */}
             <Grid container justifyContent="flex-end">
               <Grid item>
               <Link
                component = {RouterLink}
                to="/signin" 
                variant="body2" 
-               sx={{ cursor: 'pointer' }}
+               sx={{
+                cursor: 'pointer',
+                color: 'black',  // Sign Up 글자 색
+                textDecorationColor: 'black',  // 밑줄 색
+              }}
               >  
                {"Already have an account? Sign in"}
                 </Link>

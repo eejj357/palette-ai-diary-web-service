@@ -19,15 +19,15 @@ export default function SignInSide() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
 
-  //   if (token) {
-  //     // 토큰이 있는 경우, 사용자를 대시보드 페이지로 이동
-  //     navigate('/main');
-  //   }
-  // })
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      // 토큰이 있는 경우, 사용자를 대시보드 페이지로 이동
+      navigate('/main');
+    }
+  })
 
 
   // 로그인 핸들러
@@ -55,6 +55,8 @@ export default function SignInSide() {
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
+
+      {/* 좌측 사진 넣는 부분*/}
       <Grid
         item
         xs={false}
@@ -69,6 +71,8 @@ export default function SignInSide() {
           backgroundPosition: 'center',
         }}
       />
+
+      {/*우측 내용 부분*/}
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Box
           sx={{
@@ -79,46 +83,77 @@ export default function SignInSide() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          
+          {/* 자물쇠 아이콘 + 동그라미 */}
+          <Avatar sx={{
+            m: 1,
+            backgroundColor: 'black',
+            // border: '1px solid white' 
+          }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+
+          {/* SIGN IN 문구*/}
+          <Typography 
+          component="h1" 
+          variant="h5"
+          sx={{ fontWeight: 'bold' }} 
+          >
             Sign in
           </Typography>
+          
+          {/*이메일 칸*/}
           <TextField
             margin="normal"
             required
-            fullWidth
+            sx={{
+              width: '80%',
+              '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
+                fontWeight: 'bold',
+              },
+            }}
             id="email"
             label="Email Address"
             name="email"
-            autoFocus
             onChange={(e) => setEmail(e.target.value)}
           />
+
+          {/* 비밀번호 칸*/}
           <TextField
             margin="normal"
             required
-            fullWidth
+            sx={{ width: '80%',
+            '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
+              fontWeight: 'bold',
+            },
+           }}
             name="password"
             label="Password"
             type="password"
             id="password"
             onChange={(e) => setPassword(e.target.value)}
           />
+
+          {/* SIGN IN 버튼 */}
           <Button
             type="submit"
-            fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ width: '80%', mt: 3, mb: 2, backgroundColor: 'black' }}
             onClick={handleSignin}
           >
             Sign In
           </Button>
+
+          {/* SIGN UP으로 넘어가도록 링크 연결 */}
           <Link
-            component={RouterLink} 
+            component={RouterLink}
             to="/signup"
             variant="body2"
-            sx={{ cursor: 'pointer' }}
+            sx={{
+              cursor: 'pointer',
+              color: 'black',  // Sign Up 글자 색
+              textDecorationColor: 'black',  // 밑줄 색
+            }}
           >
             {"Sign Up"}
           </Link>
