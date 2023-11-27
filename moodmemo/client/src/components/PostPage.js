@@ -13,6 +13,11 @@ import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { TextField, Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import axios from 'axios'; 
+import Cookies from 'js-cookie';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Content = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -70,7 +75,7 @@ const CustomTextField = styled(TextField)({
 
 export default function Main() {
   const [PostTitle, setPostTitle] = useState(''); // title 
-  const [postContent, setPostContent] = useState('');// content
+  const [postContent, setPostContent] = useState(''); // content
 
   const handlePostTitleChange = (event) => {
     if (event.target.value.length <= 20) {
@@ -87,29 +92,45 @@ export default function Main() {
   const handlePostButtonClick = async () => {
     try {
       // 현재 시간 가져오기
-      const currentTime = new Date().toISOString();
+      const currentDate = new Date().toISOString();
 
       // 서버에 보낼 데이터
       const postData = {
-        time: currentTime,
+        date: currentDate,
+        title: PostTitle,
         content: postContent,
       };
 
+      // 쿠키에서 토큰을 가져옵니다.
+      const authToken = Cookies.get('hasVisited');
+
+      console.log(authToken);
+
       // 서버의 API 엔드포인트로 POST 요청 보내기
-      const response = await fetch('your_backend_api_url', {
-        method: 'POST',
+      const response = await axios.post('/api/diary', postData, {
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(postData),
+          Authorization: `Bearer ${authToken}`,
+        }
       });
 
 
-      if (response.ok) {
+      if (response.status === 201) {
         console.log('Post successful!');
-        // 여기에서 필요한 추가 작업 수행
+        toast.success('일기가 성공적으로 저장되었습니다');
+        // 입력 필드 초기화
+        setPostTitle('');
+        setPostContent('');
       } else {
         console.error('Post failed.');
+        toast.error('일기 저장에 실패하였습니다', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     } catch (error) {
       console.error('Error posting data:', error);
@@ -312,6 +333,7 @@ export default function Main() {
           </Button>
         </RightPanel>
       </Content>
+      <ToastContainer autoClose={5000}/>
     </div>
   );
 }

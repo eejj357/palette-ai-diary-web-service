@@ -12,6 +12,8 @@ const auth = require("./middleware/auth");
 const app = express();
 const port = 5000;
 
+const crypto = require('crypto');  // 난수
+
 
 // Middleware 설정
 // application/x-www-form-urlencoded 이렇게 된 데이터 분석해서 가져올 수 있게
@@ -118,14 +120,22 @@ app.get("/api/user/logout", auth, (req, res) => {
 // 일기 저장 라우터
 app.post("/api/diary", auth, async (req, res) => {
   try {
-    const { title, content, emotion } = req.body;
+    const { date, title, content } = req.body;
+
+     // 감정 목록
+     const emotions = ['/emo_happy_1.png', '/emo_angry_1.png', '/emo_neutral_1.png', '/emo_anxiety_1.png', '/emo_sad_1.png'];
+
+     // 난수 생성
+     const randomIndex = crypto.randomInt(0, emotions.length);
+     const selectedEmotion = emotions[randomIndex];
 
     // Diary 모델을 사용하여 새 일기 작성
     const newDiary = new Diary({
       title,
       content,
       user: req.user._id,
-      emotion,
+      date: date,
+      emotion: selectedEmotion,
     });
 
     // 일기 저장

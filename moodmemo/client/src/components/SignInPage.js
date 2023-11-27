@@ -11,7 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import axios from 'axios'; 
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignInSide() {
@@ -158,6 +158,8 @@ export default function SignInSide() {
             {"Sign Up"}
           </Link>
         </Box>
+
+        <ToastContainer autoClose={5000}/>
       </Grid>
     </Grid>
   );
