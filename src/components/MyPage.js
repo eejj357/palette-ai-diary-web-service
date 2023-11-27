@@ -1,30 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { CssBaseline, Typography, Toolbar } from '@mui/material';
-import MuiAppBar from '@mui/material/AppBar';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
-import PersonIcon from '@mui/icons-material/Person';
-import ModeIcon from '@mui/icons-material/Mode';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { Link } from 'react-router-dom';
+import { CssBaseline} from '@mui/material';
 import { styled } from '@mui/material/styles';
 import 'react-calendar/dist/Calendar.css';
 import CustomCalendar from './Calendar';
 import ColoredBarChart from './BarChart';
+import Header from './Header'; 
+import Navigation from './NavigationList';
 
-
-//상단바
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    backgroundColor: 'transparent', // 배경색을 투명으로 설정
-    borderBottom: '3px solid black', // 아래에 검정색 테두리 추가
-    boxShadow: 'none', //그림자효과제거
-}));
 
 const Content = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -50,7 +32,7 @@ const RightPanel = styled('div')`
   justify-content: flex-start; 
   margin-bottom: 20px;
   height: 100%;
-  border-left: 5px solid #000000; 
+  border-left: 3px solid #000000; 
 `;
 
 //우측 패널 상단 이미지 6개 
@@ -248,89 +230,18 @@ export default function Main() {
         <div style={{ display: 'flex', height: '100vh', flexDirection: 'column' }}>
             <CssBaseline />
             {/*  상단바 */}
-            <AppBar position="absolute">
-                <Toolbar>
-                    {/* 로고 이미지 */}
-                    <Link to="/">
-                        <img
-                            src="logo_180.png"
-                            alt="Logo"
-                            style={{
-                                width: '50px',
-                                marginLeft: '20px',
-                                marginRight: '15px',
-                            }}
-                        />
-                    </Link>
-
-                    {/* 텍스트 */}
-                    <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <Typography component="h1" variant="h6" color="black" fontWeight="bold" noWrap>
-                            MOOD MEMO
-                        </Typography>
-                    </Link>
-                </Toolbar>
-            </AppBar>
+            <Header />
 
             {/* 내용 */}
             <Content>
                 {/* 좌측 패널*/}
                 <LeftPanel>
                     {/* nav 목록*/}
-                    <List component="nav">
-                        <ListItemButton component={Link} to="/main">
-                            <ListItemIcon>
-                                <HomeIcon fontSize="large" color="disabled" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="HOME"
-                                primaryTypographyProps={{
-                                    style: { fontSize: '1.3em' }
-                                }}
-                            />
-                        </ListItemButton>
-
-
-                        <ListItemButton component={Link} to="/my">
-                            <ListItemIcon>
-                                <PersonIcon fontSize="large" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="MY"
-                                primaryTypographyProps={{
-                                    style: { fontWeight: 'bold', fontSize: '1.3em' } // 적절한 값을 선택
-                                }}
-                            />
-                        </ListItemButton>
-
-                        <ListItemButton component={Link} to="/post">
-                            <ListItemIcon>
-                                <ModeIcon fontSize="large" color="disabled" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="POST"
-                                primaryTypographyProps={{
-                                    style: { fontSize: '1.3em' } // 적절한 값을 선택
-                                }}
-                            />
-                        </ListItemButton>
-
-                        <ListItemButton component={Link} to="/">
-                            <ListItemIcon>
-                                <LogoutIcon fontSize="large" color="disabled" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="LOGOUT"
-                                primaryTypographyProps={{
-                                    style: { fontSize: '1.3em' } // 적절한 값을 선택
-                                }}
-                            />
-                        </ListItemButton>
-                    </List>
+                    <Navigation currentPage="my"  />
 
                     {/* 막대그래프 */}
                     <ColoredBarChart
-                        title="MY TREND"
+                        title="나의 팔레트 ㅤㅤㅤㅤ"
                         color={BarColor}
                     />
 
@@ -478,9 +389,10 @@ export default function Main() {
                                     border: '2px solid black',
                                     borderRadius: '5px',
                                     cursor: 'pointer',         // 마우스 오버 시 포인터로 변경
+                                    fontFamily: 'MapoFlowerIsland, sans-serif',
                                 }}
                             >
-                                Previous
+                                이전
                             </button>
                             <button
                                 onClick={() => setCurrentPage((prev) => prev + 1)}
@@ -494,9 +406,10 @@ export default function Main() {
                                     border: '2px solid black',
                                     borderRadius: '5px',
                                     cursor: 'pointer',         // 마우스 오버 시 포인터로 변경
+                                    fontFamily: 'MapoFlowerIsland, sans-serif',
                                 }}
                             >
-                                Next
+                                다음
                             </button>
                         </div>
 

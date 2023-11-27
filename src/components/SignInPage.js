@@ -47,19 +47,19 @@ export default function SignInSide() {
           {/* 자물쇠 아이콘 + 동그라미 */}
           <Avatar sx={{
             m: 1,
-            backgroundColor: 'black',
+            backgroundColor: '#B9DDF1',
             // border: '1px solid white' 
           }}>
             <LockOutlinedIcon />
           </Avatar>
 
           {/* SIGN IN 문구*/}
-          <Typography 
-          component="h1" 
-          variant="h5"
-          sx={{ fontWeight: 'bold' }} 
+          <Typography
+            component="h1"
+            variant="h5"
+            sx={{ fontWeight: 'bold' }}
           >
-            Sign in
+            로그인
           </Typography>
 
           {/*이메일 칸*/}
@@ -73,7 +73,7 @@ export default function SignInSide() {
               },
             }}
             id="email"
-            label="Email Address"
+            label="이메일"
             name="email"
           />
 
@@ -81,13 +81,14 @@ export default function SignInSide() {
           <TextField
             margin="normal"
             required
-            sx={{ width: '80%',
-            '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
-              fontWeight: 'bold',
-            },
-           }}
+            sx={{
+              width: '80%',
+              '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
+                fontWeight: 'bold',
+              },
+            }}
             name="password"
-            label="Password"
+            label="비밀번호"
             type="password"
             id="password"
           />
@@ -96,12 +97,21 @@ export default function SignInSide() {
           <Button
             type="submit"
             variant="contained"
-            sx={{ width: '80%', mt: 3, mb: 2, backgroundColor: 'black' }}
+            sx={{
+              width: '80%',
+              mt: 3,
+              mb: 2,
+              backgroundColor: '#B9DDF1',
+              boxShadow: 'none', 
+              color: 'White',    
+              // fontWeight: 'bold' ,
+            }}
           >
-            Sign In
+            로그인
           </Button>
 
-           {/* SIGN UP으로 넘어가도록 링크 연결 */}
+
+          {/* SIGN UP으로 넘어가도록 링크 연결 */}
           <Link
             component={RouterLink}
             to="/signup"
@@ -112,7 +122,7 @@ export default function SignInSide() {
               textDecorationColor: 'black',  // 밑줄 색
             }}
           >
-            {"Sign Up"}
+            {"회원가입"}
           </Link>
         </Box>
       </Grid>

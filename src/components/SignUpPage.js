@@ -31,7 +31,7 @@ export default function SignUp() {
           {/* 자물쇠 아이콘 + 동그라미 */}
           <Avatar sx={{
             m: 1,
-            backgroundColor: 'black',
+            backgroundColor: '#B9DDF1',
             // border: '1px solid white' 
           }}>
             <LockOutlinedIcon />
@@ -42,19 +42,19 @@ export default function SignUp() {
           component="h1" 
           variant="h5"
           sx={{ fontWeight: 'bold' }} >
-            Sign up
+            회원 가입
           </Typography>
           
             {/* 성, 이름, 이메일, 비밀번호*/}
             <Grid container spacing={2}>
-               {/*성 칸*/}
+               {/*이름 칸*/}
               <Grid item xs={12} sm={6}>
                 <TextField
                   name="firstName"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="First Name"
+                  label="성"
                   margin="normal"
                   sx={{
                     '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
@@ -64,13 +64,13 @@ export default function SignUp() {
                 />
               </Grid>
 
-                {/*이름 칸*/}
+                {/*성 칸*/}
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
                   id="lastName"
-                  label="Last Name"
+                  label="이름"
                   name="lastName"
                   margin="normal"
                   sx={{
@@ -87,7 +87,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="이메일"
                   name="email"
                   sx={{
                     '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
@@ -104,7 +104,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="비밀번호"
                   type="password"
                   id="password"
                   sx={{
@@ -135,9 +135,13 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2,backgroundColor: 'black' }}
+              sx={{ mt: 3, 
+                mb: 2,
+                backgroundColor: '#B9DDF1',
+                boxShadow: 'none',               
+              }}
             >
-              Sign Up
+              회원 가입
             </Button>
 
             {/*SIGN IN으로 넘어가도록 링크 연결 */}
@@ -153,7 +157,7 @@ export default function SignUp() {
                 textDecorationColor: 'black',  // 밑줄 색
               }}
               >  
-               {"Already have an account? Sign in"}
+               {"계정이 이미 있다면? 로그인하기"}
                 </Link>
               </Grid>
             </Grid>

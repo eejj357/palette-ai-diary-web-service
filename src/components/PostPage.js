@@ -1,35 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { CssBaseline, Typography, Toolbar } from '@mui/material';
-import MuiAppBar from '@mui/material/AppBar';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
-import PersonIcon from '@mui/icons-material/Person';
-import ModeIcon from '@mui/icons-material/Mode';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { Link } from 'react-router-dom';
+import { CssBaseline, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { TextField, Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import 'react-calendar/dist/Calendar.css';
 import CustomCalendar from './Calendar';
 import ColoredBarChart from './BarChart';
+import Header from './Header';
+import Navigation from './NavigationList';
 
 const Content = styled('div')(({ theme }) => ({
   display: 'flex',
   marginTop: theme.spacing(8),
-}));
-
-//상단바 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  backgroundColor: 'transparent',
-  borderBottom: '3px solid black',
-  boxShadow: 'none',
 }));
 
 
@@ -52,7 +34,8 @@ const RightPanel = styled('div')`
   justify-content: flex-start; 
   margin-bottom: 20px;
   height: 100%;
-  border-left: 5px solid #000000; 
+  border-left: 3px solid #000000; 
+  
 `;
 
 
@@ -143,87 +126,17 @@ export default function Main() {
       <CssBaseline />
 
       {/* 상단바*/}
-      <AppBar position="absolute">
-        <Toolbar>
-          {/* 로고 이미지 */}
-          <Link to="/">
-            <img
-              src="logo_180.png"
-              alt="Logo"
-              style={{
-                width: '50px',
-                marginLeft: '20px',
-                marginRight: '15px',
-              }}
-            />
-          </Link>
-
-          {/* 텍스트 */}
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography component="h1" variant="h6" color="black" fontWeight="bold" noWrap>
-              MOOD MEMO
-            </Typography>
-          </Link>
-        </Toolbar>
-      </AppBar>
+      <Header />
 
       {/* 상단바 제외 나머지 부분*/}
       <Content>
         {/* 좌측패널 - nav */}
         <LeftPanel>
-          <List component="nav">
-            <ListItemButton component={Link} to="/main">
-              <ListItemIcon>
-                <HomeIcon fontSize="large" color="disabled" />
-              </ListItemIcon>
-              <ListItemText
-                primary="HOME"
-                primaryTypographyProps={{
-                  style: { fontSize: '1.3em' },
-                }}
-              />
-            </ListItemButton>
-
-            <ListItemButton component={Link} to="/my">
-              <ListItemIcon>
-                <PersonIcon fontSize="large" color="disabled" />
-              </ListItemIcon>
-              <ListItemText
-                primary="MY"
-                primaryTypographyProps={{
-                  style: { fontSize: '1.3em' },
-                }}
-              />
-            </ListItemButton>
-
-            <ListItemButton component={Link} to="/post">
-              <ListItemIcon>
-                <ModeIcon fontSize="large" />
-              </ListItemIcon>
-              <ListItemText
-                primary="POST"
-                primaryTypographyProps={{
-                  style: { fontWeight: 'bold', fontSize: '1.3em' },
-                }}
-              />
-            </ListItemButton>
-
-            <ListItemButton component={Link} to="/">
-              <ListItemIcon>
-                <LogoutIcon fontSize="large" color="disabled" />
-              </ListItemIcon>
-              <ListItemText
-                primary="LOGOUT"
-                primaryTypographyProps={{
-                  style: { fontSize: '1.3em' },
-                }}
-              />
-            </ListItemButton>
-          </List>
+          <Navigation currentPage="post"  />
 
           {/* 막대그래프 */}
           <ColoredBarChart
-            title="MY TREND"
+            title="나의 팔레트 ㅤㅤㅤㅤ"
             color={BarColor}
           />
 
@@ -268,7 +181,7 @@ export default function Main() {
           {/* TITLE */}
           <Grid item xs={12} sm={6}>
             <CustomTextField
-              label="Title "
+              label="제목 "
               multiline
               rows={1}
               variant="outlined"
@@ -331,9 +244,10 @@ export default function Main() {
             style={{
               fontSize: '16px',
               fontWeight: 'bold',
-              marginLeft : '500px',
-              marginTop : '-50px',
-              marginBottom : '50px'
+              marginLeft: '500px',
+              marginTop: '-50px',
+              marginBottom: '50px',
+              fontFamily: 'MapoFlowerIsland, sans-serif',
             }}
           >
             {`${postContent.length}/200`}

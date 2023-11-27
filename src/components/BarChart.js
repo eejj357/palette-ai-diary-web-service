@@ -146,7 +146,10 @@ export default function ColoredBarChart({ title, color }) {
         xAxis: [
             {
                 id: 'barCategories',
-                data: ['HAPPY', 'ANGRY', 'NEUTRAL', 'FEAR', 'SAD'],
+                data: ['기쁨', '분노', '중립', '불안', '슬픔'],
+                // data: ['HAPPY', 'ANGRY', 'NEUTRAL', 'FEAR', 'SAD'],
+                // data: ['🟨', '🟥', '⬛', '🟩', '🟦'],
+                
                 scaleType: 'band',
             },
         ],
@@ -161,8 +164,7 @@ export default function ColoredBarChart({ title, color }) {
     // 오늘 날짜의 월을 영어로 반환하는 함수
     const getMonthName = () => {
         const months = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
+            '1월', '2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'
         ];
 
         const today = new Date();
@@ -186,9 +188,9 @@ export default function ColoredBarChart({ title, color }) {
                     // fontWeight: 'bold' ,
                     marginLeft: '10px',
                     marginBottom: '-30px',
-                    fontSize: '0.8rem'
+                    fontSize: '0.9rem'
                 }}>
-                {`${title}ㅤㅤㅤㅤㅤㅤㅤ ${getMonthName()}`}
+                {`${title}ㅤㅤㅤㅤㅤ ${getMonthName()}`}
             </Typography>
 
             <BarChart
