@@ -114,8 +114,6 @@ export default function Main() {
     setCalendarValue(value);
   }
 
-  //막대그래프
-  const BarColor = '#B9DDF1';
 
   useEffect(() => {
     // Fetch data or perform any side effect based on your needs
@@ -135,10 +133,7 @@ export default function Main() {
           <Navigation currentPage="post"  />
 
           {/* 막대그래프 */}
-          <ColoredBarChart
-            title="나의 팔레트 ㅤㅤㅤㅤ"
-            color={BarColor}
-          />
+          <ColoredBarChart />
 
 
           {/* 캘린더 */}
@@ -210,7 +205,7 @@ export default function Main() {
           {/* CONTENT */}
           <Grid item xs={12} sm={6}>
             <CustomTextField
-              label="Write about your feeling "
+              label="오늘의 감정을 작성해주세요"
               multiline
               rows={14}
               variant="outlined"
@@ -258,11 +253,12 @@ export default function Main() {
             variant="contained"
             onClick={handlePostButtonClick}
             sx={{
-              backgroundColor: 'black',
+              backgroundColor: '#ECA4A4',
+              boxShadow: 'none', 
               width: '200px',
             }}
           >
-            POST
+            작성하기
           </Button>
 
 

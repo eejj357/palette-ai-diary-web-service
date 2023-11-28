@@ -8,6 +8,7 @@ import InfoPage from './components/InfoPage';
 import PostPage from './components/PostPage';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+
 const theme = createTheme({
   typography: {
     fontFamily: 'MapoFlowerIsland, sans-serif', // sans-serif를 추가해야 합니다.

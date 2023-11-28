@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BarChart, } from '@mui/x-charts/BarChart';
 import Typography from '@mui/material/Typography';
 
-export default function ColoredBarChart({ title, color }) {
+export default function ColoredBarChart( ) {
     // Dummy 데이터
     const dummySetsFromDatabase = [
         {
@@ -110,6 +110,27 @@ export default function ColoredBarChart({ title, color }) {
             content: '영국 국빈 방문을 마친 윤석열 대통령이 2030 엑스포 결정의 도시 프랑스 파리로 갔습니다. 윤 대통령은 국제박람회기구의 각국 대표들과 연쇄적으로 만나면서 부산으로 결정되면 역대 최대 규모로 지원하겠다며 적극적인 지지를 호소했습니다. 프랑스 파리에서 조태흠 기자의 보도입니다. 윤석열 대통령은 프랑스 파리에 도착해, 곧바로 국제박람회기구 각국 대표들부터 만났습니다. 대부분 28일 개최지 결정 투표에서 직접 한 표를 행사할 사람들입니다.',
             date: new Date('2023-11-10T06:37:14')
         },
+        {
+            id: 16,
+            emotion: 'fear',
+            title: '안녕하세요저희는시크릿쥬쥬감자입니다!',
+            content: '확인용',
+            date: new Date('2023-11-26T06:37:14')
+        },
+        {
+            id: 17,
+            emotion: 'happy',
+            title: '안녕하세요저희는시크릿쥬쥬감자입니다!',
+            content: '확인용',
+            date: new Date('2023-11-26T06:37:14')
+        },
+        {
+            id: 18,
+            emotion: 'fear',
+            title: '안녕하세요저희는시크릿쥬쥬감자입니다!',
+            content: '확인용',
+            date: new Date('2023-11-26T06:37:14')
+        },
     ];
 
 
@@ -156,7 +177,7 @@ export default function ColoredBarChart({ title, color }) {
         series: [
             {
                 data: Object.values(emotionCount), // 감정 카운트 값들
-                color: color,
+                color : "#DCEBEB",
             },
         ],
     };
@@ -188,9 +209,9 @@ export default function ColoredBarChart({ title, color }) {
                     // fontWeight: 'bold' ,
                     marginLeft: '10px',
                     marginBottom: '-30px',
-                    fontSize: '0.9rem'
+                    fontSize: '0.9rem',
                 }}>
-                {`${title}ㅤㅤㅤㅤㅤ ${getMonthName()}`}
+                {`나의팔레트ㅤㅤㅤㅤㅤㅤㅤㅤ ${getMonthName()}`}
             </Typography>
 
             <BarChart

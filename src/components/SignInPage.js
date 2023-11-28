@@ -19,21 +19,27 @@ export default function SignInSide() {
       {/* 좌측 사진 넣는 부분*/}
       <Grid
         item
-        xs={false}
-        sm={4}
-        md={7}
+        xs={12}
+        sm={6}
+        md={5}
         sx={{
-          backgroundImage: 'url(/MM.png)',
+          backgroundImage: 'url(/signin_image.png)',
           backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
           backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundPosition: 'left',
         }}
       />
 
       {/*우측 내용 부분*/}
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid 
+      item xs={12} 
+      sm={6} 
+      md={7} 
+      component={Paper} 
+      elevation={2} 
+      square>
         <Box
           sx={{
             my: 8,
@@ -47,7 +53,7 @@ export default function SignInSide() {
           {/* 자물쇠 아이콘 + 동그라미 */}
           <Avatar sx={{
             m: 1,
-            backgroundColor: '#B9DDF1',
+            backgroundColor: '#ECA4A4',
             // border: '1px solid white' 
           }}>
             <LockOutlinedIcon />
@@ -101,7 +107,7 @@ export default function SignInSide() {
               width: '80%',
               mt: 3,
               mb: 2,
-              backgroundColor: '#B9DDF1',
+              backgroundColor: '#ECA4A4',
               boxShadow: 'none', 
               color: 'White',    
               // fontWeight: 'bold' ,

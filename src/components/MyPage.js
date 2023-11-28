@@ -32,7 +32,7 @@ const RightPanel = styled('div')`
   justify-content: flex-start; 
   margin-bottom: 20px;
   height: 100%;
-  border-left: 3px solid #000000; 
+  border-left: 2px solid #000000; 
 `;
 
 //우측 패널 상단 이미지 6개 
@@ -160,15 +160,19 @@ export default function Main() {
             content: '영국 국빈 방문을 마친 윤석열 대통령이 2030 엑스포 결정의 도시 프랑스 파리로 갔습니다. 윤 대통령은 국제박람회기구의 각국 대표들과 연쇄적으로 만나면서 부산으로 결정되면 역대 최대 규모로 지원하겠다며 적극적인 지지를 호소했습니다. 프랑스 파리에서 조태흠 기자의 보도입니다. 윤석열 대통령은 프랑스 파리에 도착해, 곧바로 국제박람회기구 각국 대표들부터 만났습니다. 대부분 28일 개최지 결정 투표에서 직접 한 표를 행사할 사람들입니다.',
             date: new Date('2023-11-10T06:37:14')
         },
+        {
+            id: 16,
+            emotion: 'sad',
+            title: '안녕하세요저희는시크릿쥬쥬감자입니다!',
+            content: '확인용',
+            date: new Date('2023-11-26T06:37:14')
+        },
     ];
 
     //캘린더
     const handleCalendarChange = (value) => {
         setCalendarValue(value);
     }
-
-    //막대그래프
-    const BarColor = '#B9DDF1';
 
     // 이미지 클릭 시 필터링 적용 및 이미지 변경
     const handleImageClick = (image) => {
@@ -240,10 +244,7 @@ export default function Main() {
                     <Navigation currentPage="my"  />
 
                     {/* 막대그래프 */}
-                    <ColoredBarChart
-                        title="나의 팔레트 ㅤㅤㅤㅤ"
-                        color={BarColor}
-                    />
+                    <ColoredBarChart/>
 
 
                     {/* 캘린더 */}
@@ -385,8 +386,8 @@ export default function Main() {
                                     width: '100px',  // 버튼 크기 조절
                                     fontWeight: 'bold',
                                     fontSize: '14px',
-                                    backgroundColor: 'white',
-                                    border: '2px solid black',
+                                    backgroundColor: '#F7E2E1',
+                                    border: 'none',
                                     borderRadius: '5px',
                                     cursor: 'pointer',         // 마우스 오버 시 포인터로 변경
                                     fontFamily: 'MapoFlowerIsland, sans-serif',
@@ -402,8 +403,8 @@ export default function Main() {
                                     width: '100px',  // 버튼 크기 조절
                                     fontWeight: 'bold',
                                     fontSize: '14px',
-                                    backgroundColor: 'white',
-                                    border: '2px solid black',
+                                    backgroundColor: '#F7E2E1',
+                                    border: 'none',
                                     borderRadius: '5px',
                                     cursor: 'pointer',         // 마우스 오버 시 포인터로 변경
                                     fontFamily: 'MapoFlowerIsland, sans-serif',

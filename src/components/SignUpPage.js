@@ -31,7 +31,7 @@ export default function SignUp() {
           {/* 자물쇠 아이콘 + 동그라미 */}
           <Avatar sx={{
             m: 1,
-            backgroundColor: '#B9DDF1',
+            backgroundColor: '#ECA4A4',
             // border: '1px solid white' 
           }}>
             <LockOutlinedIcon />
@@ -137,7 +137,7 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, 
                 mb: 2,
-                backgroundColor: '#B9DDF1',
+                backgroundColor: '#ECA4A4',
                 boxShadow: 'none',               
               }}
             >
