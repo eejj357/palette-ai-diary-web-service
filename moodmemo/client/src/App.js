@@ -6,20 +6,28 @@ import MainPage from './components/MainPage';
 import MyPage from './components/MyPage';
 import InfoPage from './components/InfoPage';
 import PostPage from './components/PostPage';
-// import './App.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: 'MapoFlowerIsland, sans-serif', // sans-serif를 추가해야 합니다.
+  },
+});
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/signin" element={<SignInPage />} />
-        <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/main" element={<MainPage />} />
-        <Route path="/my" element={<MyPage />} />
-        <Route path="/post" element={<PostPage />} />
-        <Route path="/" element={<InfoPage />} />
-      </Routes>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Routes>
+          <Route path="/signin" element={<SignInPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/main" element={<MainPage />} />
+          <Route path="/my" element={<MyPage />} />
+          <Route path="/post" element={<PostPage />} />
+          <Route path="/" element={<InfoPage />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 };
 

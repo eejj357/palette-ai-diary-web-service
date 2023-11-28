@@ -1,7 +1,7 @@
 const express = require("express");
+const cors = require('cors');
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser")
 
 const User = require("./models/User");
@@ -21,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // application/json 타입으로 된 것을 데이터 분석해서 가져올 수 있게
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());  // 모든 경로에 대해 CORS를 허용하는 미들웨어 추가
 
 
 // MongoDB 연결
@@ -78,7 +79,7 @@ app.post("/login", async (req, res) => {
 
         // 4. 생성된 token을 쿠키에 저장
         res
-          .cookie("hasVisited", user.token)
+          .cookie("hasVisited", user.token, { httpOnly: true })
           .status(200)
           .json({ loginSuccess: true, userId: user._id });
       });
@@ -123,7 +124,7 @@ app.post("/api/diary", auth, async (req, res) => {
     const { date, title, content } = req.body;
 
      // 감정 목록
-     const emotions = ['/emo_happy_1.png', '/emo_angry_1.png', '/emo_neutral_1.png', '/emo_anxiety_1.png', '/emo_sad_1.png'];
+     const emotions = ['happy', 'angry', 'neutral', 'anxiety', 'sad'];
 
      // 난수 생성
      const randomIndex = crypto.randomInt(0, emotions.length);

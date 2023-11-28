@@ -16,28 +16,31 @@ import 'react-toastify/dist/ReactToastify.css';
 
 export default function SignInSide() {
   const navigate = useNavigate();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
 
-    if (token) {
-      // 토큰이 있는 경우, 사용자를 대시보드 페이지로 이동
-      navigate('/main');
-    }
-  })
+  //   if (token) {
+  //     // 토큰이 있는 경우, 사용자를 메인 페이지로 이동
+  //     navigate('/main');
+  //   }
+  // }, []);  // 빈 배열을 전달하여 최초 렌더링 시에만 실행
 
 
   // 로그인 핸들러
   const handleSignin = async() => {
+
     try {
       const response = await axios.post('/login', { email, password });
 
       if (response.data.loginSuccess) {
         // 로그인 성공 시 token을 local storage에 저장
         localStorage.setItem('token', response.data.token);
+        console.log('로그인 성공. 메인 페이지로 이동합니다.');
 
         // 메인 페이지로 이동
         navigate('/main');
@@ -63,7 +66,7 @@ export default function SignInSide() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url(/mm.png)',
+          backgroundImage: 'url(/MM.png)',
           backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -87,7 +90,7 @@ export default function SignInSide() {
           {/* 자물쇠 아이콘 + 동그라미 */}
           <Avatar sx={{
             m: 1,
-            backgroundColor: 'black',
+            backgroundColor: '#B9DDF1',
             // border: '1px solid white' 
           }}>
             <LockOutlinedIcon />
@@ -99,7 +102,7 @@ export default function SignInSide() {
           variant="h5"
           sx={{ fontWeight: 'bold' }} 
           >
-            Sign in
+            로그인
           </Typography>
           
           {/*이메일 칸*/}
@@ -113,7 +116,7 @@ export default function SignInSide() {
               },
             }}
             id="email"
-            label="Email Address"
+            label="이메일"
             name="email"
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -128,7 +131,7 @@ export default function SignInSide() {
             },
            }}
             name="password"
-            label="Password"
+            label="비밀번호"
             type="password"
             id="password"
             onChange={(e) => setPassword(e.target.value)}
@@ -138,10 +141,18 @@ export default function SignInSide() {
           <Button
             type="submit"
             variant="contained"
-            sx={{ width: '80%', mt: 3, mb: 2, backgroundColor: 'black' }}
+            sx={{
+              width: '80%',
+              mt: 3,
+              mb: 2,
+              backgroundColor: '#B9DDF1',
+              boxShadow: 'none', 
+              color: 'White',    
+              // fontWeight: 'bold' ,
+            }}
             onClick={handleSignin}
           >
-            Sign In
+            로그인
           </Button>
 
           {/* SIGN UP으로 넘어가도록 링크 연결 */}
@@ -155,7 +166,7 @@ export default function SignInSide() {
               textDecorationColor: 'black',  // 밑줄 색
             }}
           >
-            {"Sign Up"}
+            {"회원가입"}
           </Link>
         </Box>
 

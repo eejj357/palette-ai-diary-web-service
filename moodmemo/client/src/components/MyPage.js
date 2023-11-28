@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { CssBaseline, Typography, Toolbar } from '@mui/material';
-import MuiAppBar from '@mui/material/AppBar';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
-import PersonIcon from '@mui/icons-material/Person';
-import ModeIcon from '@mui/icons-material/Mode';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { Link, useNavigate } from 'react-router-dom';
+import { CssBaseline} from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Calendar from 'react-calendar'; 
+import 'react-calendar/dist/Calendar.css';
+import CustomCalendar from './Calendar';
+import ColoredBarChart from './BarChart';
+import Header from './Header'; 
+import Navigation from './NavigationList';
 import axios from 'axios'; 
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Content = styled('div')(({ theme }) => ({
@@ -21,18 +15,10 @@ const Content = styled('div')(({ theme }) => ({
     marginTop: theme.spacing(8),
 }));
 
-//상단바
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme }) => ({
-    backgroundColor: 'transparent', // 배경색을 투명으로 설정
-    borderBottom: '3px solid black', // 아래에 검정색 테두리 추가
-    boxShadow: 'none', //그림자효과제거
-}));
 
 //좌측 패널 
 const LeftPanel = styled('div')`
-  width: 300px;
+  width: 350px;
   padding: ${({ theme }) => theme.spacing(3)};
   background-color: #FFFFFF; 
   height: 100vh;
@@ -48,7 +34,7 @@ const RightPanel = styled('div')`
   justify-content: flex-start; 
   margin-bottom: 20px;
   height: 100%;
-  border-left: 5px solid #000000; 
+  border-left: 3px solid #000000; 
 `;
 
 //우측 패널 상단 이미지 6개 
@@ -63,19 +49,51 @@ const ImageRow = styled('div')`
 
 
 export default function Main() {
-    const navigate = useNavigate();
-
-    const setsPerPage = 4;
+    const setsPerPage = 3;  //한페이지에 보여줄 set 수
     const [currentPage, setCurrentPage] = useState(1);
-    const [selectedImage, setSelectedImage] = useState(null); // for 필터링
+    const [selectedEmotion, setSelectedEmotion] = useState(null); // for 필터링
+    const [calendarValue, setCalendarValue] = useState(new Date()); // for 캘린더
     const [userDiaries, setUserDiaries] = useState([]);
 
 
-    //필터링 기능
+    //캘린더
+    const handleCalendarChange = (value) => {
+        setCalendarValue(value);
+    }
+
+    //막대그래프
+    const BarColor = '#B9DDF1';
+
+
+    // 이미지 클릭 시 필터링 적용 및 이미지 변경
     const handleImageClick = (image) => {
-        // 이미지를 클릭하면서 이미 선택된 이미지와 동일한 경우 선택 해제
-        setSelectedImage((prev) => (prev === image ? null : image));
+        // 이미지 파일 이름에서 감정 추출
+        const emotionFromImage = image.split('_')[1]; // 예: emo_happy_1.png -> 'happy'
+        console.log('emotionFromImage:', emotionFromImage);
+
+        // 이미지를 클릭할 때마다 감정이 바뀌도록 설정
+        const newEmotionImage = selectedEmotion ? `emo_${emotionFromImage}_1.png` : `emo_${emotionFromImage}_2.png`;
+        console.log('newEmotionImage:', newEmotionImage);
+
+        // 이미 선택된 감정과 동일한 경우 선택 해제, 아닌 경우 선택
+        setSelectedEmotion((prev) => (prev === emotionFromImage ? null : emotionFromImage));
+
+        // 이미지 변경을 위한 로직 
+        const imageElement = document.querySelector(`img[src="${image}"]`);
+        console.log('imageElement:', imageElement);
+        if (imageElement) {
+            // // 이미지 클릭 시 이미지 상태 업데이트
+            // setSelectedEmotion((prev) => (prev === emotionFromImage ? null : emotionFromImage));
+            // 변경된 이미지 로딩
+            imageElement.src = newEmotionImage;
+        }
     };
+    
+
+    const filteredSets = selectedEmotion
+        ? userDiaries.filter((set) => set.emotion === selectedEmotion)
+        : userDiaries;
+
 
     //페이지 기능
     const paginateSets = (sets) => {
@@ -84,19 +102,13 @@ export default function Main() {
         return sets.slice(startIndex, endIndex);
     };
 
-    const currentSets = paginateSets(
-        selectedImage
-            ? userDiaries.filter((set) => set.emotion === selectedImage)
-            : userDiaries
-    );
-
 
     // 서버에서 데이터 가져오기
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // 서버로부터 사용자의 일기를 가져옴
-                const response = await axios.get('api/get-my-diaries');
+                const response = await axios.get('/api/get-my-diaries');
 
                 if (response.data) {
                     setUserDiaries(response.data);
@@ -109,159 +121,63 @@ export default function Main() {
         };
 
         fetchData();  // fetchData 함수 호출
-    }, []);
+    }, [selectedEmotion]);  // selectedEmotion이 변경될 때만 useEffect가 실행되도록 변경
 
-
-    // 로그아웃 핸들러
-    const handleLogout = async () => {
-        try {
-        // 로그아웃 API 호출
-        const response = await axios.get('/api/user/logout');
-
-        if (response.data.success) {
-            // 로그아웃 성공 시 로그인 페이지로 이동
-            navigate('/');
-
-            toast.success('로그아웃되었습니다');  // 팝업창 안뜸
-
-            // 로컬 스토리지에서 토큰 제거
-            localStorage.removeItem('token');
-        } else {
-            // 로그아웃 실패 시 에러 메세지 표시
-            toast.error(response.data.message);
-        }
-        } catch (err) {
-        console.error('로그아웃 중 오류:', err);
-        }
-    };
+    const currentSets = paginateSets(filteredSets);
 
     return (
         <div style={{ display: 'flex', height: '100vh', flexDirection: 'column' }}>
             <CssBaseline />
-
             {/*  상단바 */}
-            <AppBar position="absolute">
-                <Toolbar>
-                    {/* 로고 이미지 */}
-                    <img
-                        src="logo_180.png"
-                        alt="Logo"
-                        style={{
-                            width: '50px',
-                            marginLeft: '20px',
-                            marginRight: '15px'
-                        }}
-                    />
-
-                    {/* 텍스트 */}
-                    <Typography component="h1" variant="h6" color="black" fontWeight="bold" noWrap>
-                        MOOD MEMO
-                    </Typography>
-
-                </Toolbar>
-            </AppBar>
+            <Header />
 
             {/* 내용 */}
             <Content>
                 {/* 좌측 패널*/}
                 <LeftPanel>
-                    <List component="nav">
-                        <ListItemButton component={Link} to="/main">
-                            <ListItemIcon>
-                                <HomeIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="HOME"
-                                primaryTypographyProps={{
-                                    style: {  fontSize: '1.3em' } // 적절한 값을 선택
-                                }}
-                            />
-                        </ListItemButton>
+                    {/* nav 목록*/}
+                    <Navigation currentPage="my"  />
+
+                    {/* 막대그래프 */}
+                    <ColoredBarChart
+                        title="나의 팔레트 ㅤㅤㅤㅤ"
+                        color={BarColor}
+                    />
 
 
-                        <ListItemButton component={Link} to="/my">
-                            <ListItemIcon>
-                                <PersonIcon color="disabled" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="MY"
-                                primaryTypographyProps={{
-                                    style: { fontWeight: 'bold',fontSize: '1.3em' } // 적절한 값을 선택
-                                }}
-                            />
-                        </ListItemButton>
-
-                        <ListItemButton component={Link} to="/post">
-                            <ListItemIcon>
-                                <ModeIcon color="disabled" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="POST"
-                                primaryTypographyProps={{
-                                    style: { fontSize: '1.3em' } // 적절한 값을 선택
-                                }}
-                            />
-                        </ListItemButton>
-
-                        <ListItemButton onClick={handleLogout}>
-                            <ListItemIcon>
-                                <LogoutIcon color="disabled" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="LOGOUT"
-                                primaryTypographyProps={{
-                                    style: { fontSize: '1.3em' } // 적절한 값을 선택
-                                }}
-                            />
-                        </ListItemButton>
-                    </List>
-
-                    {/* 캘린더 추가 */}
-                    <div style={{ marginTop: 'auto' }}>
-                        <Calendar />
-                    </div>
+                    {/* 캘린더 */}
+                    <CustomCalendar
+                        onChange={handleCalendarChange}
+                        value={calendarValue}
+                    />
                 </LeftPanel>
 
                 {/*우측패널 */}
                 <RightPanel>
-                    {/* 상단 공간 */}
                     <div>
                         {/* 6개의 이미지 */}
                         <ImageRow>
+                            {/* CLICK.png */}
                             <img
                                 src="/CLICK.png"
                                 alt="click"
                                 style={{ width: '100px', height: '100px' }}
+                                onClick={() => handleImageClick(null)} // null을 전달하여 선택된 감정 초기화
                             />
-                            <img
-                                src="/emo_happy_1.png"
-                                alt="emo 1"
-                                style={{ width: '100px', height: '100px' }}
-                                onClick={() => handleImageClick("/emo_happy_1.png")} />
 
-                            <img
-                                src="/emo_angry_1.png"
-                                alt="emo 2"
-                                style={{ width: '100px', height: '100px' }}
-                                onClick={() => handleImageClick("/emo_angry_1.png")} />
-                            <img
-                                src="/emo_neutral_1.png"
-                                alt="emo 3"
-                                style={{ width: '100px', height: '100px' }}
-                                onClick={() => handleImageClick("/emo_neutral_1.png")} />
-                            <img
-                                src="/emo_anxiety_1.png"
-                                alt="emo 4"
-                                style={{ width: '100px', height: '100px' }}
-                                onClick={() => handleImageClick("/emo_anxiety_1.png")} />
-                            <img
-                                src="/emo_sad_1.png"
-                                alt="emo 5"
-                                style={{ width: '100px', height: '100px' }}
-                                onClick={() => handleImageClick("/emo_sad_1.png")} />
+                            {/* 감정 이미지들 */}
+                            {["happy", "angry", "neutral", "anxiety", "sad"].map((emotion) => (
+                                <img
+                                    key={emotion}
+                                    src={`/emo_${emotion}_1.png`}
+                                    alt={`emo ${emotion}`}
+                                    style={{ width: '100px', height: '100px' }}
+                                    onClick={() => handleImageClick(`/emo_${emotion}_1.png`)}
+                                />
+                            ))}
                         </ImageRow>
 
-                        {/* 내용 넣을 부분 : SET(이미지 + 작성시간 + 글)*/}
+                        {/* 내용 넣을 부분 : SET(이미지 + 작성시간 + 타이틀 + 글)*/}
                         {currentSets.map((set) => (
                             <div
                                 key={set.user}
@@ -274,7 +190,7 @@ export default function Main() {
                                     marginTop: '30px',
                                 }}
                             >
-                                {/* 이미지 및 작성시간 부분  : SET중이미지 + 작성시간)*/}
+                                {/* 이미지 및 타이틀 작성시간 부분  : SET중이미지 + 타이틀 + 작성시간)*/}
                                 <div
                                     style={{
                                         display: 'flex',
@@ -285,27 +201,42 @@ export default function Main() {
                                         borderRadius: '8px 8px 0 0',
                                     }}
                                 >
-                                    <div>
-                                        <img
-                                            src={set.emotion}
-                                            alt="이미지 설명"
+                                    {/* 이미지와 제목을 감싸는 부모 컨테이너 */}
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center'
+                                        }}>
+                                        <div>
+                                            <img
+                                                src={`emo_${set.emotion}_1.png`}
+                                                alt="이미지 설명"
+                                                style={{
+                                                    width: '50px',
+                                                    height: '50px',
+                                                    objectFit: 'cover',
+                                                    marginLeft: '15px',
+                                                    marginTop: '15px',
+                                                }}
+                                            />
+                                        </div>
+
+                                        {/* 제목을 이미지 바로 오른쪽에 추가 */}
+                                        <div
                                             style={{
-                                                width: '50px',
-                                                height: '50px',
-                                                objectFit: 'cover',
                                                 marginLeft: '15px',
-                                                marginTop: '15px',
-                                            }}
-                                        />
+                                                marginTop: '10px',
+                                                fontWeight: 'bold',
+                                                fontSize: '18px',
+                                            }}>{set.title}</div>
                                     </div>
 
-
+                                    {/* 시간 : SET중(시간) */}
                                     <div style={{
                                         marginRight: '15px',
                                         marginTop: '-20px',
                                         fontSize: '14px',
                                     }}>
-
                                         <span style={{ fontWeight: 'bold' }}>
                                             {new Date(set.date).toLocaleString('ko-KR',
                                                 {
@@ -349,15 +280,16 @@ export default function Main() {
                                 style={{
                                     padding: '10px',
                                     width: '100px',  // 버튼 크기 조절
-                                    fontWeight: 'bold',   
-                                    fontSize: '14px',  
-                                    backgroundColor: 'white', 
-                                    border: '2px solid black',  
-                                    borderRadius: '5px',      
+                                    fontWeight: 'bold',
+                                    fontSize: '14px',
+                                    backgroundColor: 'white',
+                                    border: '2px solid black',
+                                    borderRadius: '5px',
                                     cursor: 'pointer',         // 마우스 오버 시 포인터로 변경
+                                    fontFamily: 'MapoFlowerIsland, sans-serif',
                                 }}
                             >
-                                Previous
+                                이전
                             </button>
                             <button
                                 onClick={() => setCurrentPage((prev) => prev + 1)}
@@ -365,15 +297,16 @@ export default function Main() {
                                 style={{
                                     padding: '10px',
                                     width: '100px',  // 버튼 크기 조절
-                                    fontWeight: 'bold',   
-                                    fontSize: '14px',  
-                                    backgroundColor: 'white',  
-                                    border: '2px solid black', 
-                                    borderRadius: '5px',       
+                                    fontWeight: 'bold',
+                                    fontSize: '14px',
+                                    backgroundColor: 'white',
+                                    border: '2px solid black',
+                                    borderRadius: '5px',
                                     cursor: 'pointer',         // 마우스 오버 시 포인터로 변경
+                                    fontFamily: 'MapoFlowerIsland, sans-serif',
                                 }}
                             >
-                                Next
+                                다음
                             </button>
                         </div>
 

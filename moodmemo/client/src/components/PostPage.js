@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { CssBaseline, Typography, Toolbar } from '@mui/material';
-import MuiAppBar from '@mui/material/AppBar';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
-import PersonIcon from '@mui/icons-material/Person';
-import ModeIcon from '@mui/icons-material/Mode';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { Link } from 'react-router-dom';
+import { CssBaseline, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { TextField, Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import 'react-calendar/dist/Calendar.css';
+import CustomCalendar from './Calendar';
+import ColoredBarChart from './BarChart';
+import Header from './Header';
+import Navigation from './NavigationList';
 import axios from 'axios'; 
 import Cookies from 'js-cookie';
 import { ToastContainer, toast } from 'react-toastify';
@@ -24,33 +19,26 @@ const Content = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(8),
 }));
 
-//상단바 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  backgroundColor: 'transparent',
-  borderBottom: '3px solid black',
-  boxShadow: 'none',
-}));
 
 //좌측 패널
 const LeftPanel = styled('div')`
-  width: 300px;
+  width: 350px;
   padding: ${({ theme }) => theme.spacing(3)};
   background-color: #FFFFFF;
   height: 100vh;
-  border-right: 3px solid #000000;
 `;
 
 //우측 패널
 const RightPanel = styled('div')`
   flex: 1;
+  padding: ${({ theme }) => theme.spacing(3)};
   display: flex;
   flex-direction: column;
-  padding: ${({ theme }) => theme.spacing(3)};
   align-items: center;
-  background-color: #ffffff;
+  justify-content: flex-start; 
+  margin-bottom: 20px;
+  height: 100%;
+  border-left: 3px solid #000000; 
 `;
 
 
@@ -76,9 +64,10 @@ const CustomTextField = styled(TextField)({
 export default function Main() {
   const [PostTitle, setPostTitle] = useState(''); // title 
   const [postContent, setPostContent] = useState(''); // content
+  const [calendarValue, setCalendarValue] = useState(new Date()); // for 캘린더
 
   const handlePostTitleChange = (event) => {
-    if (event.target.value.length <= 20) {
+    if (event.target.value.length <= 27) {
       setPostTitle(event.target.value);
     }
   };
@@ -103,8 +92,6 @@ export default function Main() {
 
       // 쿠키에서 토큰을 가져옵니다.
       const authToken = Cookies.get('hasVisited');
-
-      console.log(authToken);
 
       // 서버의 API 엔드포인트로 POST 요청 보내기
       const response = await axios.post('/api/diary', postData, {
@@ -137,6 +124,14 @@ export default function Main() {
     }
   };
 
+  //캘린더
+  const handleCalendarChange = (value) => {
+    setCalendarValue(value);
+  }
+
+  //막대그래프
+  const BarColor = '#B9DDF1';
+
   useEffect(() => {
     // Fetch data or perform any side effect based on your needs
   }, []);
@@ -146,76 +141,26 @@ export default function Main() {
       <CssBaseline />
 
       {/* 상단바*/}
-      <AppBar position="absolute">
-        <Toolbar>
-          <img
-            src="logo_180.png"
-            alt="Logo"
-            style={{
-              width: '50px',
-              marginLeft: '20px',
-              marginRight: '15px',
-            }}
-          />
-          <Typography component="h1" variant="h6" color="black" fontWeight="bold" noWrap>
-            MOOD MEMO
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Header />
       
       {/* 상단바 제외 나머지 부분*/}
       <Content>
         {/* 좌측패널 - nav */}
         <LeftPanel>
-          <List component="nav">
-            <ListItemButton component={Link} to="/main">
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="HOME"
-                primaryTypographyProps={{
-                  style: { fontSize: '1.3em' },
-                }}
-              />
-            </ListItemButton>
+          <Navigation currentPage="post"  />
 
-            <ListItemButton component={Link} to="/my">
-              <ListItemIcon>
-                <PersonIcon color="disabled" />
-              </ListItemIcon>
-              <ListItemText
-                primary="MY"
-                primaryTypographyProps={{
-                  style: { fontSize: '1.3em' },
-                }}
-              />
-            </ListItemButton>
+          {/* 막대그래프 */}
+          <ColoredBarChart
+            title="나의 팔레트 ㅤㅤㅤㅤ"
+            color={BarColor}
+          />
 
-            <ListItemButton component={Link} to="/post">
-              <ListItemIcon>
-                <ModeIcon color="disabled" />
-              </ListItemIcon>
-              <ListItemText
-                primary="POST"
-                primaryTypographyProps={{
-                  style: { fontWeight: 'bold', fontSize: '1.3em' },
-                }}
-              />
-            </ListItemButton>
 
-            <ListItemButton component={Link} to="/">
-              <ListItemIcon>
-                <LogoutIcon color="disabled" />
-              </ListItemIcon>
-              <ListItemText
-                primary="LOGOUT"
-                primaryTypographyProps={{
-                  style: { fontSize: '1.3em' },
-                }}
-              />
-            </ListItemButton>
-          </List>
+          {/* 캘린더 */}
+          <CustomCalendar
+            onChange={handleCalendarChange}
+            value={calendarValue}
+          />
         </LeftPanel>
         
         {/* 우측패널 - 상단 : 이미지, 하단 : 텍스트 입력칸 */}
@@ -251,7 +196,7 @@ export default function Main() {
             {/* TITLE */}
           <Grid item xs={12} sm={6}>
             <CustomTextField
-              label="Title "
+              label="제목 "
               multiline
               rows={1}
               variant="outlined"
@@ -259,10 +204,9 @@ export default function Main() {
                 style: { marginTop: '-5px' },
               }}
               inputProps={{
-                maxLength: 20,
+                maxLength: 27,
                 style: {
                   fontSize: '20px',
-                  marginTop: '10px',
                   marginLeft: '10px',
                   marginRight: '10px',
                   lineHeight: '1',
@@ -277,7 +221,7 @@ export default function Main() {
             />
           </Grid>
 
-               {/* CONTENT */}
+          {/* CONTENT */}
           <Grid item xs={12} sm={6}>
             <CustomTextField
               label="Write about your feeling "
@@ -290,7 +234,7 @@ export default function Main() {
               inputProps={{
                 maxLength: 200,
                 style: {
-                  fontSize: '20px',
+                  fontSize: '16px',
                   marginLeft: '10px',
                   marginRight: '10px',
                   marginBottom: '10px',
@@ -300,7 +244,7 @@ export default function Main() {
               value={postContent}
               onChange={handlePostContentChange}
               style={{
-                marginBottom: '15px',
+                marginBottom: '10px',
                 marginTop: '20px',
                 width: '600px',
               }}
@@ -312,11 +256,12 @@ export default function Main() {
             variant="caption"
             color="textSecondary"
             style={{
-              position: 'fixed',
-              bottom: '150px',
-              right: '530px',
               fontSize: '16px',
               fontWeight: 'bold',
+              marginLeft: '500px',
+              marginTop: '-50px',
+              marginBottom: '50px',
+              fontFamily: 'MapoFlowerIsland, sans-serif',
             }}
           >
             {`${postContent.length}/200`}
@@ -325,9 +270,11 @@ export default function Main() {
           {/*POST 버튼*/}
           <Button
             variant="contained"
-            color="primary"
             onClick={handlePostButtonClick}
-            sx={{ backgroundColor: 'black' }}
+            sx={{
+              backgroundColor: 'black',
+              width: '200px',
+            }}
           >
             POST
           </Button>

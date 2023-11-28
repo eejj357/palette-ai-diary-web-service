@@ -24,8 +24,8 @@ export default function SignUp() {
   const [user, setUser] = useState({
     email: '',
     password: '',
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
   });
 
   const [isAgreed, setIsAgreed] = useState(false);
@@ -44,7 +44,7 @@ export default function SignUp() {
     try {
       // 개인정보 수집 및 이용 동의 여부 확인
       if (!isAgreed) {
-        toast.warning('개인정보 수집 및 이용에 동의하여 주십시오');
+        toast.warning('개인정보 수집 및 정보 이용에 동의하여 주십시오');
         return;
       }
 
@@ -71,7 +71,7 @@ export default function SignUp() {
         });
       } else {
         toast.error(`회원가입에 실패하였습니다`);
-        console.error('회원가입 실패:', response.data.message);
+        console.error('회원가입 실패:', response.data);
       }
     } catch (error) {
       toast.error('오류가 발생하였습니다');
@@ -102,30 +102,30 @@ export default function SignUp() {
           {/* 자물쇠 아이콘 + 동그라미 */}
           <Avatar sx={{
             m: 1,
-            backgroundColor: 'black',
+            backgroundColor: '#B9DDF1',
             // border: '1px solid white' 
           }}>
             <LockOutlinedIcon />
           </Avatar>
-
+          
           {/* SIGN UP 문구*/}
           <Typography 
           component="h1" 
           variant="h5"
           sx={{ fontWeight: 'bold' }} >
-            Sign up
+            회원 가입
           </Typography>
           
             {/* 성, 이름, 이메일, 비밀번호*/}
             <Grid container spacing={2}>
-              {/*성 칸*/}
-              <Grid item xs={12} sm={6}>
+               {/*성 칸*/}
+               <Grid item xs={12} sm={6}>
                 <TextField
-                  name="firstName"
+                  name="lastName"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="Last Name"
+                  label="성"
                   margin="normal"
                   sx={{
                     '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
@@ -136,14 +136,14 @@ export default function SignUp() {
                 />
               </Grid>
 
-               {/*이름 칸*/}
-               <Grid item xs={12} sm={6}>
+              {/*이름 칸*/}
+              <Grid item xs={12} sm={6}>
                 <TextField
+                  name="firstName"
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
+                  id="First Name"
+                  label="이름"
                   margin="normal"
                   sx={{
                     '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
@@ -157,11 +157,11 @@ export default function SignUp() {
                {/*이메일 칸*/}
               <Grid item xs={12}>
                 <TextField
+                  name="email"
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
+                  id="Email"
+                  label="이메일"
                   sx={{
                     '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
                       fontWeight: 'bold',
@@ -175,12 +175,12 @@ export default function SignUp() {
               <Grid item xs={12}>
 
                 <TextField
+                  name="password"
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
+                  id="Password"
+                  label="비밀번호"
                   type="password"
-                  id="password"
                   sx={{
                     '& .MuiInputLabel-root': {  // 사용자 정의 라벨 스타일
                       fontWeight: 'bold',
@@ -198,7 +198,7 @@ export default function SignUp() {
                     <Typography 
                     // sx={{ fontWeight: 'bold' }}
                     >
-                      개인정보 수집 및 이용에 동의합니다.
+                      개인정보 수집 및 정보 이용에 동의합니다.
                     </Typography>
                   }
                 />
@@ -210,10 +210,14 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2,backgroundColor: 'black' }}
+              sx={{ mt: 3, 
+                mb: 2,
+                backgroundColor: '#B9DDF1',
+                boxShadow: 'none',               
+              }}
               onClick={handleSignup}
             >
-              Sign Up
+              회원 가입
             </Button>
 
             {/*SIGN IN으로 넘어가도록 링크 연결 */}
@@ -229,7 +233,7 @@ export default function SignUp() {
                 textDecorationColor: 'black',  // 밑줄 색
               }}
               >  
-               {"Already have an account? Sign in"}
+               {"계정이 이미 있다면? 로그인하기"}
                 </Link>
               </Grid>
             </Grid>
