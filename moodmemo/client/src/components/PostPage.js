@@ -66,28 +66,58 @@ export default function Main() {
   const [postContent, setPostContent] = useState(''); // content
   const [calendarValue, setCalendarValue] = useState(new Date()); // for 캘린더
 
+  // title
   const handlePostTitleChange = (event) => {
     if (event.target.value.length <= 27) {
       setPostTitle(event.target.value);
     }
   };
 
+  // content
   const handlePostContentChange = (event) => {
     if (event.target.value.length <= 200) {
       setPostContent(event.target.value);
     }
   };
 
+  const performSentimentAnalysis = async () => {
+    try {
+      // 감정 분석을 위한 데이터
+      const sentimentData = {
+        sentences: postContent,
+      };
+
+      // Flask 서버에 감정 분석 요청 보내기
+      const sentimentResponse = await axios.post('http://127.0.0.1:5001/predict', sentimentData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // 감정 분석 결과 사용
+      const emotionResult = sentimentResponse.data.predictions;
+      console.log('Emotion Result:', emotionResult);
+      return emotionResult;
+    } catch (err) {
+      console.error('감정 분석 중 오류가 발생하였습니다', err);
+    }
+  };
+
+
   const handlePostButtonClick = async () => {
     try {
       // 현재 시간 가져오기
       const currentDate = new Date().toISOString();
+
+      // 감정 분석 실행
+      const emotionResult = await performSentimentAnalysis();
 
       // 서버에 보낼 데이터
       const postData = {
         date: currentDate,
         title: PostTitle,
         content: postContent,
+        emotion: emotionResult,
       };
 
       // 쿠키에서 토큰을 가져옵니다.
@@ -124,13 +154,11 @@ export default function Main() {
     }
   };
 
-  //캘린더
+  // 캘린더
   const handleCalendarChange = (value) => {
     setCalendarValue(value);
   }
 
-  //막대그래프
-  const BarColor = '#B9DDF1';
 
   useEffect(() => {
     // Fetch data or perform any side effect based on your needs
@@ -150,16 +178,14 @@ export default function Main() {
           <Navigation currentPage="post"  />
 
           {/* 막대그래프 */}
-          <ColoredBarChart
-            title="나의 팔레트 ㅤㅤㅤㅤ"
-            color={BarColor}
-          />
+          <ColoredBarChart/>
 
 
           {/* 캘린더 */}
           <CustomCalendar
             onChange={handleCalendarChange}
             value={calendarValue}
+            pageType="my"
           />
         </LeftPanel>
         
@@ -224,7 +250,7 @@ export default function Main() {
           {/* CONTENT */}
           <Grid item xs={12} sm={6}>
             <CustomTextField
-              label="Write about your feeling "
+              label="오늘의 감정을 작성해주세요"
               multiline
               rows={14}
               variant="outlined"
@@ -272,11 +298,12 @@ export default function Main() {
             variant="contained"
             onClick={handlePostButtonClick}
             sx={{
-              backgroundColor: 'black',
+              backgroundColor: '#ECA4A4',
+              boxShadow: 'none', 
               width: '200px',
             }}
           >
-            POST
+            작성하기
           </Button>
         </RightPanel>
       </Content>

@@ -34,7 +34,7 @@ const RightPanel = styled('div')`
   justify-content: flex-start; 
   margin-bottom: 20px;
   height: 100%;
-  border-left: 3px solid #000000; 
+  border-left: 2px solid #000000; 
 `;
 
 //우측 패널 상단 이미지 6개 
@@ -60,9 +60,6 @@ export default function Main() {
     const handleCalendarChange = (value) => {
         setCalendarValue(value);
     }
-
-    //막대그래프
-    const BarColor = '#B9DDF1';
 
 
     // 이미지 클릭 시 필터링 적용 및 이미지 변경
@@ -139,16 +136,14 @@ export default function Main() {
                     <Navigation currentPage="my"  />
 
                     {/* 막대그래프 */}
-                    <ColoredBarChart
-                        title="나의 팔레트 ㅤㅤㅤㅤ"
-                        color={BarColor}
-                    />
+                    <ColoredBarChart/>
 
 
                     {/* 캘린더 */}
                     <CustomCalendar
                         onChange={handleCalendarChange}
                         value={calendarValue}
+                        pageType="my"
                     />
                 </LeftPanel>
 
@@ -282,8 +277,8 @@ export default function Main() {
                                     width: '100px',  // 버튼 크기 조절
                                     fontWeight: 'bold',
                                     fontSize: '14px',
-                                    backgroundColor: 'white',
-                                    border: '2px solid black',
+                                    backgroundColor: '#F7E2E1',
+                                    border: 'none',
                                     borderRadius: '5px',
                                     cursor: 'pointer',         // 마우스 오버 시 포인터로 변경
                                     fontFamily: 'MapoFlowerIsland, sans-serif',
@@ -299,8 +294,8 @@ export default function Main() {
                                     width: '100px',  // 버튼 크기 조절
                                     fontWeight: 'bold',
                                     fontSize: '14px',
-                                    backgroundColor: 'white',
-                                    border: '2px solid black',
+                                    backgroundColor: '#F7E2E1',
+                                    border: 'none',
                                     borderRadius: '5px',
                                     cursor: 'pointer',         // 마우스 오버 시 포인터로 변경
                                     fontFamily: 'MapoFlowerIsland, sans-serif',

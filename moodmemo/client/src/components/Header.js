@@ -4,8 +4,8 @@ import { AppBar, Toolbar, Typography } from '@mui/material';
 
 const Header = () => {
   return (
-    <AppBar position="absolute" style={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
-      <Toolbar style={{ borderBottom: '3px solid black' }}>
+    <AppBar position="absolute" style={{ backgroundColor: '#DCEBEB', boxShadow: 'none' }}>
+      <Toolbar style={{ borderBottom: 'none' }}>
         {/* 로고 이미지 */}
         <Link to="/">
           <img

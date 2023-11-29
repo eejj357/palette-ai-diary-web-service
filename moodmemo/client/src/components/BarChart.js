@@ -3,7 +3,7 @@ import { BarChart, } from '@mui/x-charts/BarChart';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 
-export default function ColoredBarChart({ title, color }) {
+export default function ColoredBarChart() {
     const [diaryData, setDiaryData] = useState([]);
 
     useEffect(() => {
@@ -63,7 +63,7 @@ export default function ColoredBarChart({ title, color }) {
         series: [
             {
                 data: Object.values(emotionCount), // 감정 카운트 값들
-                color: color,
+                color: "#DCEBEB",
             },
         ],
     };
@@ -94,9 +94,9 @@ export default function ColoredBarChart({ title, color }) {
                 style={{
                     marginLeft: '10px',
                     marginBottom: '-30px',
-                    fontSize: '0.9rem'
+                    fontSize: '0.9rem',
                 }}>
-                {`${title}ㅤㅤㅤㅤㅤ ${getMonthName()}`}
+                {`나의팔레트ㅤㅤㅤㅤㅤㅤㅤㅤ ${getMonthName()}`}
             </Typography>
 
             <BarChart

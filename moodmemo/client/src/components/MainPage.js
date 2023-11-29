@@ -34,7 +34,7 @@ const RightPanel = styled('div')`
   justify-content: flex-start; 
   margin-bottom: 20px;
   height: 100%;
-  border-left: 3px solid #000000; 
+  border-left: 2px solid #000000; 
 `;
 
 //우측 패널 상단 이미지 6개 
@@ -55,18 +55,10 @@ export default function Main() {
     const [calendarValue, setCalendarValue] = useState(new Date()); // for 캘린더
     const [userDiaries, setUserDiaries] = useState([]);
 
-    //막대그래프
-    const BarColor = '#2A5783';
-
 
     //캘린더
     const handleCalendarChange = (value) => {
         setCalendarValue(value);
-    };
-
-    const fetchDataForMainPage = async (headers) => {
-        // main 페이지에 필요한 데이터 가져오기
-        return axios.get('/api/get-all-diaries', { headers });
     };
 
 
@@ -109,7 +101,7 @@ export default function Main() {
         const fetchData = async () => {
             try {
                 // 서버로부터 사용자의 일기를 가져옴
-                const response = await fetchDataForMainPage();
+                const response = await axios.get('/api/get-all-diaries');
 
                 if (response.data) {
                     setUserDiaries(response.data);
@@ -122,7 +114,7 @@ export default function Main() {
         };
 
         fetchData();  // fetchData 함수 호출
-    }, []);
+    }, [selectedEmotion]);
 
     const currentSets = paginateSets(filteredSets);
 
@@ -141,16 +133,13 @@ export default function Main() {
                     <Navigation currentPage="main" />
 
                     {/* 막대그래프 */}
-                    <ColoredBarChart
-                        title="우리의 팔레트 ㅤㅤㅤ"
-                        color={BarColor}
-                    />
+                    <ColoredBarChart/>
 
                     {/* 캘린더 */}
                     <CustomCalendar
                         onChange={handleCalendarChange}
                         value={calendarValue}
-                        fetchFunction={fetchDataForMainPage}
+                        pageType="my"
                     />
                 </LeftPanel>
 
@@ -284,8 +273,8 @@ export default function Main() {
                                     width: '100px',  // 버튼 크기 조절
                                     fontWeight: 'bold',
                                     fontSize: '14px',
-                                    backgroundColor: 'white',
-                                    border: '2px solid black',
+                                    backgroundColor: '#F7E2E1',
+                                    border: 'none',
                                     borderRadius: '5px',
                                     cursor: 'pointer',         // 마우스 오버 시 포인터로 변경
                                     fontFamily: 'MapoFlowerIsland, sans-serif',
@@ -301,8 +290,8 @@ export default function Main() {
                                     width: '100px',  // 버튼 크기 조절
                                     fontWeight: 'bold',
                                     fontSize: '14px',
-                                    backgroundColor: 'white',
-                                    border: '2px solid black',
+                                    backgroundColor: '#F7E2E1',
+                                    border: 'none',
                                     borderRadius: '5px',
                                     cursor: 'pointer',         // 마우스 오버 시 포인터로 변경
                                     fontFamily: 'MapoFlowerIsland, sans-serif',

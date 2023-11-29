@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CssBaseline, Button, Container, Box } from '@mui/material';
 
 
-export default function SignUp() {
+export default function Info() {
   const navigate = useNavigate();
 
   const handleButtonClick = (path) => {
@@ -11,11 +11,11 @@ export default function SignUp() {
   };
 
   const backgroundStyle = {
-    backgroundImage: 'url("/test.png")',
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
+    backgroundImage: 'url("/info.png")',
+    backgroundSize: 'cover',
+    backgroundPosition: 'top',
     backgroundAttachment: 'scroll',  // Allow scrolling to see the full image
-    height: '4000px',
+    height: '6000px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -29,7 +29,7 @@ export default function SignUp() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop : '3800px',
+            marginTop : '5500px',
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -46,15 +46,17 @@ export default function SignUp() {
               mt: 3,
               mb: 2,
               fontSize: '1.2rem',         
-              backgroundColor: 'white',  //transparent', 
-              border: '1px solid black',  
-              color: 'black',   
+              backgroundColor: '#F7E2E1',
+              boxShadow: 'none',   
+              border: 'none',  
+              color: 'black',  
               fontWeight: 'bold',          
             }}
             onClick={() => handleButtonClick('/signin')}
           >
             로그인
           </Button>
+          
           <Button
             type="button"
             fullWidth
@@ -63,8 +65,9 @@ export default function SignUp() {
               mt: 3,
               mb: 2,
               fontSize: '1.2rem',         
-              backgroundColor: 'transparent',  
-              border: '1px solid black',  
+              backgroundColor: '#F7E2E1',
+              boxShadow: 'none',   
+              border: 'none',  
               color: 'black',    
               fontWeight: 'bold',  // 일반적으로 bold는 700, 900까지 조절 가능 -> 나중에 변경       
             }}

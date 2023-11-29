@@ -80,7 +80,7 @@ const Navigation = ({ currentPage, textStyle }) => {
                     <ModeIcon fontSize="large" color={isMyPage || isMainPage ? 'disabled' : 'inherit'} />
                 </ListItemIcon>
                 <ListItemText
-                    primary="일기 쓰기"
+                    primary="일기 작성"
                     primaryTypographyProps={{
                         style: {
                             fontWeight: isPostPage ? '600' : '580',

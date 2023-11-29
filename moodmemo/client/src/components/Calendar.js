@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import Badge from '@mui/material/Badge';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -47,7 +47,7 @@ function ServerDay(props) {
   );
 }
 
-export default function DateCalendarServerRequest({ fetchFunction }) {
+export default function DateCalendarServerRequest({ pageType }) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [userDiaries, setUserDiaries] = React.useState([]);
   const [token, setToken] = useState('');
@@ -59,6 +59,20 @@ export default function DateCalendarServerRequest({ fetchFunction }) {
       setToken(userToken);
     }
   }, []);
+
+  const fetchFunction = async (headers) => {
+    try {
+      // 페이지 타입에 따라 다른 API 호출
+      const apiEndpoint = pageType === 'my' ? '/api/get-my-diaries' : '/api/get-all-diaries';
+      
+      // 서버로부터 일기 데이터 가져오기
+      const response = await axios.get(apiEndpoint, { headers });
+      return response.data;
+    } catch (err) {
+      console.error("데이터를 불러오는데 실패하였습니다", err);
+      throw err;
+    }
+  };
 
 
   const fetchData = async () => {
@@ -74,8 +88,8 @@ export default function DateCalendarServerRequest({ fetchFunction }) {
       };
 
       // 서버로부터 일기 데이터 가져오기
-      const response = await fetchFunction(headers);
-      setUserDiaries(response.data);
+      const data = await fetchFunction(headers);
+      setUserDiaries(data);
     } catch (err) {
       console.error("데이터를 불러오는데 실패하였습니다", err);
     } finally {

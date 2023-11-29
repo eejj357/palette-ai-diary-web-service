@@ -121,22 +121,22 @@ app.get("/api/user/logout", auth, (req, res) => {
 // 일기 저장 라우터
 app.post("/api/diary", auth, async (req, res) => {
   try {
-    const { date, title, content } = req.body;
+    const { date, title, content, emotion } = req.body;
 
-     // 감정 목록
-     const emotions = ['happy', 'angry', 'neutral', 'anxiety', 'sad'];
+    //  // 감정 목록
+    //  const emotions = ['happy', 'angry', 'neutral', 'anxiety', 'sad'];
 
-     // 난수 생성
-     const randomIndex = crypto.randomInt(0, emotions.length);
-     const selectedEmotion = emotions[randomIndex];
+    //  // 난수 생성
+    //  const randomIndex = crypto.randomInt(0, emotions.length);
+    //  const selectedEmotion = emotions[randomIndex];
 
     // Diary 모델을 사용하여 새 일기 작성
     const newDiary = new Diary({
       title,
       content,
       user: req.user._id,
-      date: date,
-      emotion: selectedEmotion,
+      date,
+      emotion,
     });
 
     // 일기 저장
