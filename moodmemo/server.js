@@ -1,7 +1,7 @@
 const express = require("express");
+const cors = require('cors');
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser")
 
 const User = require("./models/User");
@@ -12,6 +12,8 @@ const auth = require("./middleware/auth");
 const app = express();
 const port = 5000;
 
+const crypto = require('crypto');  // 난수
+
 
 // Middleware 설정
 // application/x-www-form-urlencoded 이렇게 된 데이터 분석해서 가져올 수 있게
@@ -19,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // application/json 타입으로 된 것을 데이터 분석해서 가져올 수 있게
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());  // 모든 경로에 대해 CORS를 허용하는 미들웨어 추가
 
 
 // MongoDB 연결
@@ -57,7 +60,7 @@ app.post("/login", async (req, res) => {
       if (!user) {  // email이 DB에 없으면
         return res.json({
           loginSuccess: false,
-          message: "이메일을 다시 확인하세요.",
+          message: "이메일을 다시 확인하세요",
         });
       }
 
@@ -67,7 +70,7 @@ app.post("/login", async (req, res) => {
       if (!isMatch)
         return res.json({
           loginSuccess: false,
-          message: "비밀번호가 틀렸습니다.",
+          message: "비밀번호가 틀렸습니다",
         });
       
       // 3. password가 일치하다면 token 생성
@@ -76,7 +79,7 @@ app.post("/login", async (req, res) => {
 
         // 4. 생성된 token을 쿠키에 저장
         res
-          .cookie("hasVisited", user.token)
+          .cookie("hasVisited", user.token, { httpOnly: true })
           .status(200)
           .json({ loginSuccess: true, userId: user._id });
       });
@@ -110,7 +113,7 @@ app.get("/api/user/logout", auth, (req, res) => {
       });
     })
     .catch((err) => {
-      return res.json({ success: false, err });
+      return res.json({ success: false, message: "로그아웃에 실패하였습니다" });
     });
 });
 
@@ -118,13 +121,21 @@ app.get("/api/user/logout", auth, (req, res) => {
 // 일기 저장 라우터
 app.post("/api/diary", auth, async (req, res) => {
   try {
-    const { title, content, emotion } = req.body;
+    const { date, title, content, emotion } = req.body;
+
+    //  // 감정 목록
+    //  const emotions = ['happy', 'angry', 'neutral', 'anxiety', 'sad'];
+
+    //  // 난수 생성
+    //  const randomIndex = crypto.randomInt(0, emotions.length);
+    //  const selectedEmotion = emotions[randomIndex];
 
     // Diary 모델을 사용하여 새 일기 작성
     const newDiary = new Diary({
       title,
       content,
       user: req.user._id,
+      date,
       emotion,
     });
 
@@ -140,7 +151,7 @@ app.post("/api/diary", auth, async (req, res) => {
 
 
 // 모든 일기 가져오기
-app.get("/api/getAllDiaries", async (req, res) => {
+app.get("/api/get-all-diaries", async (req, res) => {
   try {
     const diaries = await Diary.find();
 
@@ -148,5 +159,19 @@ app.get("/api/getAllDiaries", async (req, res) => {
   } catch (err) {
     console.err(err);
     res.status(500).json({ error: "Internal Server Error"});
+  }
+});
+
+
+// 내 일기 가져오기
+app.get("/api/get-my-diaries", auth, async (req, res) => {
+  try {
+    // 현재 로그인한 user의 ID를 사용하여 해당 user의 일기를 찾는다
+    const userDiaries = await Diary.find({ user: req.user._id });
+
+    res.status(200).json(userDiaries);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
