@@ -13,7 +13,7 @@
 
 <table>
   <tr>
-    <td><img src="![image](https://github.com/eejj357/palette-ai-diary-web-service/assets/84446424/ceaa37ae-8455-4e98-9c04-656e6eef5b38)" width="200"></td>
+    <td><img src="./img/team_emoji.png" width="200"></td>
     <td>
       <table>
         <tr>
@@ -37,17 +37,19 @@
 ## &#128197; 프로젝트 진행 기간
 **2023.09 - 2023.12 (3개월)**
 
-## &#128187; 서비스 구조
-### Service Architecture
-![archi1](./srv/A-4/static/assets/img/portfolio/archi_1.png)
-1. 사용자가 일기를 입력하면 일기 데이터를 감정 분류 모델과 키워드 추출 모델에 입력으로 전달한다.
-2. 감정 분류 모델에서 일기의 상위 감정 3개가 추출된다.
-3. 키워드 추출 모델에서 일기의 상위 키워드 3개가 추출된다.
-4. 2과 3의 결과(감정, 키워드)과 DB의 도서 데이터와 비교하여 비슷한 키워드와 감정을 가진 도서를 추출한다.
-5. 추출한 감정, 키워드와 추천하는 도서를 페이지에 출력한다.
+## &#128187; 기능 소개
+### 화면 구성
+<img src="./img/001.png" alt="화면 흐름도"> 
 
-### BERT Model
-![archi2](./srv/A-4/static/assets/img/portfolio/bert_img2.png)
+  
+### 1. 로그인, 회원가입 및 일기 저장 기능
+### 2. 감정 분석 알고리즘 구현
+<img src="./img/002.png" alt="감정 분석 알고리즘 구현">
+   
+### 3. 감정별 일기 필터링 기능 및 월별 감정 통계 제공
+ 
+
+### Pretrained BERT Model
 - [KcELECTRA_base](https://github.com/Beomi/KcELECTRA)
 - [KcBERT_base](https://github.com/Beomi/KcBERT)
 - [KlueRoberta_small](https://huggingface.co/klue/roberta-small)
@@ -55,15 +57,12 @@
 - [KlueBERT_base](https://huggingface.co/klue/bert-base)
 
 다양한 한국어 코퍼스에 대해 사전 훈련된 다섯 가지 모델을 선정하여 모델의 감정 분석에 대한 성능을 비교  
-정확도가 0.850로 가장 높았던 **KlueBERT-base**을 최종 모델로 선정 
+정확도가 0.850로 가장 높았던 **KlueBERT-base**을 최종 모델로 선정  
+  
+<img src="./img/plot.png" alt="KlueBERT-base Accuracy, Loss plot" width="500">
   
 ## &#128736; Skills
-사진
+<img src="./img/003.png" alt="개발 환경">
 
 ## &#127910; 시연
-### 입력
-![입력](./srv/A-4/static/assets/img/photos/시연1.png)
-### 결과1
-![결과1](./srv/A-4/static/assets/img/photos/시연2.png)
-### 결과2
-![결과2](./srv/A-4/static/assets/img/photos/시연3.png)
+추가 예정
